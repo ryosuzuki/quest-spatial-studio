@@ -23,3 +23,24 @@ class VideoImportTests(unittest.TestCase):
   with tempfile.TemporaryDirectory() as d:
    root=Path(d);source=self.make(root);f=source/'left_camera.mp4.packets.csv';f.write_text(f.read_text().replace('200000','210000'))
    with self.assertRaisesRegex(ValueError,'timestamp mismatch'):convert(source,root/'out')
+
+ def test_bounded_container_quantization_preserves_sensor_pairing(self):
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);source=self.make(root)
+   p=source/'left_camera.mp4.packets.csv';p.write_text(p.read_text().replace('200000','200200'))
+   p=source/'left_camera_mruk_frame_metadata.csv';p.write_text(p.read_text().replace('1800000000200000','1800000000200200'))
+   result=convert(source,root/'out')
+   self.assertEqual(result['frames'][2]['t'],.2002)
+   self.assertEqual(result['report']['maxContainerPtsErrorUs'],200)
+ def test_large_container_timestamp_drift_rejected(self):
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);source=self.make(root)
+   p=source/'left_camera.mp4.packets.csv';p.write_text(p.read_text().replace('200000','210000'))
+   p=source/'left_camera_mruk_frame_metadata.csv';p.write_text(p.read_text().replace('1800000000200000','1800000000210000'))
+   with self.assertRaisesRegex(ValueError,'within 1 ms'):convert(source,root/'out')
+
+ def test_duplicate_sensor_timestamp_rejected(self):
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);source=self.make(root)
+   p=source/'left_camera_mruk_frame_metadata.csv';lines=p.read_text().splitlines();p.write_text('\n'.join(lines+[lines[1]])+'\n')
+   with self.assertRaisesRegex(ValueError,'Duplicate camera metadata'):convert(source,root/'out')

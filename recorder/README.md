@@ -1,4 +1,4 @@
-> この文書は元のQuestRealityCaptureの仕様です。このリポジトリの **Spatial Capture** のAPK・アプリID・導入方法は [トップの案内](../README.md) と [撮影手順](../docs/RECORDING.md) を参照してください。
+> This document describes the upstream QuestRealityCapture app. For this repository's **Spatial Capture** APK, app ID, and installation instructions, see the [main guide](../README.md) and [recording guide](../docs/RECORDING.md).
 
 # QuestRealityCapture
 

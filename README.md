@@ -1,52 +1,56 @@
 # Quest Spatial Studio
 
-Questで一度撮影し、部屋・カメラ軌跡を使って後からAR動画を編集する実験環境。
+An experimental workspace for recording once on Quest, then editing AR videos using room geometry and camera trajectories.
 
-**開発中です。コードの存在、ビルド成功、実機取得成功は区別します。** 最新の確認状況は [STATUS.md](docs/STATUS.md)。自宅の映像・音声・部屋スキャン・認証情報はこのリポジトリに含めません。
+**Work in progress. Implemented code, successful builds, and successful on-device capture are separate milestones.** See [STATUS.md](docs/STATUS.md) for current verification results. This repository does not contain home videos, audio, room scans, or credentials.
 
-## ここから始める
+## Start here
 
-- **Questアプリを入れる：** [Spatial Capture 0.1.3 APK（テスト版）](https://github.com/ryosuzuki/quest-spatial-studio/releases/tag/v0.1.3-test)。Assets の `spatial-capture.apk` をダウンロード。Unityは不要です。
-- **撮影する：** [導入 → 20秒撮影 → Macへ回収](docs/RECORDING.md)
-- **Macで再生・編集する：** [クイックスタート](docs/QUICKSTART.md)。Questなしのサンプルもあります。
-- **コードを読む・ビルドする：** [開発ガイドとコードマップ](docs/DEVELOPMENT.md)
-- **何が確認済みか：** [検証状況](docs/STATUS.md)。動画fps・手の連続追跡・同期精度は新しい実機撮影での確認待ちです。
+- **Install the Quest app:** [Spatial Capture 0.1.3 APK (test build)](https://github.com/ryosuzuki/quest-spatial-studio/releases/tag/v0.1.3-test). Download `spatial-capture.apk` from Assets. Unity is not required.
+- **Record a take:** [Install → record 20 seconds → copy to Mac](docs/RECORDING.md)
+- **Play and edit on Mac:** [Quick start](docs/QUICKSTART.md), including a sample that does not require Quest.
+- **Read or build the code:** [Development guide and code map](docs/DEVELOPMENT.md)
+- **Check what is verified:** [Verification status](docs/STATUS.md). The latest real take contains 95 seconds of video at 9.61 fps and 2,300 hand-log samples; physical alignment and audio synchronization remain to be measured.
 
 ```text
 Quest: Spatial Capture
-  ↓ USBでコピー（元データは削除しない）
-Mac: 録画ファイル → インポート → Three.jsで配置・再生 → MP4書き出し
-                         └→ 部屋データだけを3D表示することも可能
+  ↓ Copy over USB (original data is retained)
+Mac: Recording files → Import → Place objects and play in Three.js → Export MP4
+                             └→ View room data alone in 3D
 ```
 
-このリポジトリは非公開です。閲覧・APK取得にはアクセス権のあるGitHubアカウントでのログインが必要です。
+This repository is private. Viewing it or downloading the APK requires signing in with a GitHub account that has access.
 
-## インタラクティブなデジタルツイン
+## Interactive digital twin
 
-左の録画映像と右の3D空間を同期。物体の配置変更が合成映像にも反映されます。軌跡・カメラ姿勢・手のログの確認と、空間内の映像プレビューに対応。WebXR操作は実装済み・ヘッドセット未検証です。
+The recorded video on the left is synchronized with the 3D scene on the right. Object placement changes also appear in the composited video. Inspect the trajectory, camera poses, and hand logs, or preview the video inside the 3D scene. WebXR controls are implemented but have not been verified in a headset.
 
-![同期編集画面（人工データによるテスト。自宅の録画ではありません）](docs/digital-twin-preview.png)
+![Synchronized editor (tested with synthetic data, not home recordings)](docs/digital-twin-preview.png)
 
-[操作方法・WebXRの条件](docs/QUICKSTART.md#デジタルツインでデバッグする)
+[Controls and WebXR requirements](docs/QUICKSTART.md#debug-with-the-digital-twin)
 
-## 構成
+## New recording demonstration
 
-- **recorder/** — Unity/Questネイティブ録画アプリ。既存のQuestRealityCaptureを拡張。
-- **editor/** — Three.jsの映像合成＋3D俯瞰・カメラ軌跡・配置編集。WebXR表示の入口も実装。
-- **scripts/** — インストール・データ回収用コマンド。
-- **docs/** — 撮影手順、ファイル形式、検証状況。
+[Real-take evidence, reproduction, and figure handoff](docs/new-take-demo.md) · [Interactive editor demo](docs/editor-interaction-demo.md)
 
-## 目指す録画セット
+## Repository layout
 
-- `left_camera.mp4` ＋各フレームのカメラ姿勢・内部パラメータ
-- `audio.wav` ＋ `audio-timing.json`（音声の開始時刻は推定。拍手で同期を検証）
-- `hands.jsonl` ＋手の骨格定義・追跡信頼度・欠測状態
-- `room-scan.json`（MRUKの原形式）＋ `room-geometry.json`（Three.js用の実測メッシュ／空間アンカーの境界）
-- 頭・コントローラ姿勢、深度（既存レコーダー由来）
+- **recorder/** — Native Unity/Quest recording app, extending QuestRealityCapture.
+- **editor/** — Three.js video compositing, 3D overview, camera trajectories, and object placement. Includes an entry point for WebXR viewing.
+- **scripts/** — Installation and data-retrieval commands.
+- **docs/** — Recording instructions, file formats, and verification status.
 
-30fpsは目標値で、端末での測定結果ではありません。映像のPTSと実際にエンコードされたフレームの照合が必要です。部屋スキャンとカメラ映像の座標系はそのまま混ぜず、変換・位置合わせを検証します。
+## Target recording bundle
 
-## まず編集画面を試す（Quest不要）
+- `left_camera.mp4` plus per-frame camera poses and intrinsics
+- `audio.wav` plus `audio-timing.json` (audio start time is estimated; verify synchronization with a visible clap)
+- `hands.jsonl` plus hand skeleton definitions, tracking confidence, and missing-data state
+- `room-scan.json` (original MRUK format) plus `room-geometry.json` (measured meshes / spatial-anchor bounds for Three.js)
+- Head and controller poses, and depth (from the upstream recorder)
+
+30 fps is a target, not a measured device result. Video PTS values must be checked against the frames actually encoded. Do not mix room-scan and camera coordinate systems directly: verify the conversion and alignment.
+
+## Try the editor without Quest
 
 ```sh
 cd editor
@@ -57,23 +61,23 @@ python3 -m venv .venv
 npm start
 ```
 
-`http://localhost:8766` を開きます。左が撮影カメラからの合成、右が自由視点の3D空間です（狭い画面では上下）。3D空間の矢印をドラッグすると、同じ物体の配置が映像にも反映されます。合成サンプルは人工データと明示しています。
+Open `http://localhost:8766`. The left pane shows the recording-camera composite; the right pane shows a freely navigable 3D scene (stacked on narrow screens). Drag the arrows in the 3D scene to change the same object's placement in the video. The generated sample is explicitly labeled as synthetic data.
 
-`room-geometry.json` を読み込むとスキャンした部屋を表示できます。必ず同じ録画セッションのファイルを使ってください。別セッションやPolycamは別途位置合わせが必要です。
+Load `room-geometry.json` to display the scanned room. Always use a file from the same recording session. Other sessions and Polycam scans require separate alignment.
 
-WebXRは対応ブラウザとHTTPS（localhostは例外）が必要です。デスクトップ動作確認とQuestブラウザでのXR動作確認は別です。
+WebXR requires a supported browser and HTTPS (except on localhost). Desktop verification is separate from XR verification in the Quest browser.
 
-## 部屋だけを見る
+## View the room alone
 
-`editor/room.html` を開き、`room-geometry.json` を選ぶと実測メッシュと家具の境界を自由視点で表示できます。映像なしで使えます。部屋のローカルJSONはGit管理対象外の `editor/private/` に置いてください。別の起動時に撮った映像へ自動で位置合わせはしません。
+Open `editor/room.html` and select `room-geometry.json` to explore measured meshes and furniture bounds from a free viewpoint. Video is not required. Store local room JSON files in the Git-ignored `editor/private/` directory. The viewer does not automatically align them with video captured during a different app launch.
 
-## Questアプリ
+## Quest app
 
-[撮影・導入手順](docs/RECORDING.md) / [録画実装の説明](recorder/Assets/SpatialCapture/README.md)
+[Recording and installation instructions](docs/RECORDING.md) / [Recorder implementation](recorder/Assets/SpatialCapture/README.md)
 
-アプリ名は **Spatial Capture**、パッケージは `org.openclaw.spatialcapture`。既存のQuestRealityCaptureと別アプリなので元の録画を消しません。
+The app is named **Spatial Capture**, with package ID `org.openclaw.spatialcapture`. It is separate from QuestRealityCapture and does not delete the original app's recordings.
 
-ビルド：Unity **6000.4.5f1**、Android Build Support、JDK17、NDK r27c。`recorder/` をUnityプロジェクトとして開きます。公開Unity/Metaパッケージを使います。
+Build requirements: Unity **6000.4.5f1**, Android Build Support, JDK17, and NDK r27c. Open `recorder/` as a Unity project. It uses publicly available Unity/Meta packages.
 
 ```sh
 SPATIAL_APK="$PWD/spatial-capture.apk" /path/to/Unity -batchmode -quit \
@@ -81,10 +85,10 @@ SPATIAL_APK="$PWD/spatial-capture.apk" /path/to/Unity -batchmode -quit \
   -executeMethod SpatialCaptureBuild.Android -logFile build.log
 ```
 
-## 遮蔽・動く物体
+## Occlusion and moving objects
 
-部屋メッシュによる静的遮蔽は編集側に実装済み。家具の細かい形状がない場合は遮蔽も粗くなります。録画後の2D追跡、マスク、深度との融合で動く物体にも拡張できますが、一般的な動的物体の6DoF追跡はまだ実装していません。2D点＋机面へのレイ投射は机上の拘束された動きに有効で、空中の任意の動きには追加情報が必要です。
+Static occlusion using room meshes is implemented in the editor. Occlusion will be coarse where detailed furniture geometry is unavailable. The new-take demonstrator includes bounded 2D green-region tracking and reprojected recorded-depth occlusion. General dynamic-object 6DoF tracking is not implemented; see the [evidence and limitations](docs/new-take-demo.md). Raycasting tracked 2D points onto a table plane is useful for constrained tabletop motion; arbitrary motion in the air requires additional information.
 
-## 出典
+## Attribution
 
-Recorder upstream: [t-34400/QuestRealityCapture](https://github.com/t-34400/QuestRealityCapture), snapshot `649c012a3d95363101aa7f9fe53d67c59cbecbec` (MIT; [原ライセンス](recorder/LICENSE)を保持)。Meta/Unity SDKはそれぞれの利用条件に従います。独自拡張と元の実装を区別し、upstreamへの貢献／公式製品とは称しません。
+Recorder upstream: [t-34400/QuestRealityCapture](https://github.com/t-34400/QuestRealityCapture), snapshot `649c012a3d95363101aa7f9fe53d67c59cbecbec` (MIT; [original license](recorder/LICENSE) retained). Meta/Unity SDKs remain subject to their respective terms. Custom extensions are distinguished from the original implementation; this project does not claim to be an upstream contribution or an official product.

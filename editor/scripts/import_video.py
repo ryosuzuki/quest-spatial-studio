@@ -13,17 +13,22 @@ def convert(source,dest,eye='left',row_order='bottom-up'):
     with Path(str(video)+'.packets.csv').open() as f: packets=list(csv.DictReader(f))
     with (source/f'{eye}_camera_mruk_frame_metadata.csv').open() as f: rows=list(csv.DictReader(f))
     origin=int(status['originCameraUs'])
-    by_pts={int(r['timestamp_us_realtime'])-origin:r for r in rows if r['file_name']==video.name}
+    accepted_rows=[r for r in rows if r['file_name']==video.name]
+    by_pts={int(r['timestamp_us_realtime'])-origin:r for r in accepted_rows}
+    if len(by_pts)!=len(accepted_rows):raise ValueError('Duplicate camera metadata timestamps')
     pts=[int(p['pts_us']) for p in packets]
     if not pts or any(b<=a for a,b in zip(pts,pts[1:])):raise ValueError('Invalid packet timestamps')
     if set(pts)!=set(by_pts):raise ValueError('Packet/pose timestamp mismatch')
     probe=json.loads(subprocess.check_output(['ffprobe','-v','error','-select_streams','v:0','-show_frames','-show_entries','frame=best_effort_timestamp_time','-of','json',str(video)]))
     decoded=[round(float(f['best_effort_timestamp_time'])*1e6) for f in probe['frames']]
-    if len(decoded)!=len(pts) or any(abs(a-b)>2 for a,b in zip(decoded,pts)):raise ValueError('MP4 decoded PTS do not match encoder packet PTS')
+    # Android MediaMuxer quantizes durations to its track timebase; bounded drift
+    # is not a frame mismatch. Keep exact sensor/packet timestamps for pairing.
+    pts_error=max((abs(a-b) for a,b in zip(decoded,pts)),default=0)
+    if len(decoded)!=len(pts) or pts_error>1000:raise ValueError('MP4 decoded PTS do not match encoder packet PTS within 1 ms')
     dest.mkdir(parents=True,exist_ok=True);(dest/'frames').mkdir()
     cmd=['ffmpeg','-v','error','-i',str(video)]
     if row_order=='bottom-up':cmd+=['-vf','vflip']
-    subprocess.run(cmd+['-fps_mode','passthrough','-start_number','0',str(dest/'frames/%06d.png')],check=True)
+    subprocess.run(cmd+['-fps_mode','passthrough','-enc_time_base','1:1000000','-start_number','0',str(dest/'frames/%06d.png')],check=True)
     files=list((dest/'frames').glob('*.png'))
     if len(files)!=len(pts):raise ValueError('Decoded image count mismatch')
     frames=[];rejected=[];size=None
@@ -40,7 +45,7 @@ def convert(source,dest,eye='left',row_order='bottom-up'):
     if not frames:raise ValueError('No valid poses')
     gaps=[b['t']-a['t'] for a,b in zip(frames,frames[1:])];median=sorted(gaps)[len(gaps)//2] if gaps else 1/30
     meta=json.loads((source/f'{eye}_camera_mruk_intrinsics.json').read_text())
-    doc=dict(version=1,name=source.name,synthetic=False,coordinateSystem='three-rh-y-up-meters-camera-minus-z',imageOrigin='top-left',sourceRowOrder=row_order,intrinsics=intrinsics(meta,*size),frames=frames,duration=frames[-1]['t']+median,report=dict(accepted=len(frames),rejected=rejected,maxGapSeconds=max(gaps,default=0),medianGapSeconds=median),calibrationStatus='requires-physical-reprojection-test')
+    doc=dict(version=1,name=source.name,synthetic=False,coordinateSystem='three-rh-y-up-meters-camera-minus-z',imageOrigin='top-left',sourceRowOrder=row_order,intrinsics=intrinsics(meta,*size),frames=frames,duration=frames[-1]['t']+median,report=dict(maxContainerPtsErrorUs=pts_error,containerPtsToleranceUs=1000,accepted=len(frames),rejected=rejected,maxGapSeconds=max(gaps,default=0),medianGapSeconds=median),calibrationStatus='requires-physical-reprojection-test')
     for name,key in [('room-geometry.json','roomGeometryFile'),('hands.jsonl','handsFile'),('spatial-capture-schema.json','captureSchemaFile'),('left-hand-skeleton.json','leftSkeletonFile'),('right-hand-skeleton.json','rightSkeletonFile')]:
         if (source/name).exists():shutil.copy2(source/name,dest/name);doc[key]=name
     if (source/'audio.wav').exists() and (source/'audio-timing.json').exists():

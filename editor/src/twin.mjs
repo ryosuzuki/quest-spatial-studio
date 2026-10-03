@@ -47,6 +47,7 @@ export function createTwin({canvas,scene,camera,anchor,onMove,getRoom,renderVide
     const rot=new THREE.Quaternion(-q.x,-q.y,q.z,q.w),pos=new THREE.Vector3(p.x,p.y,-p.z);
     for(const side of ['left','right']){
       const h=sample[side];if(!h?.valid||!h.tracked||!h.bonePositions?.length)continue;
+      if(Number.isFinite(sample.ovrSeconds)&&Number.isFinite(h.sampleTimestamp)&&Math.abs(sample.ovrSeconds-h.sampleTimestamp)>.15)continue;
       const vertices=h.bonePositions.map(v=>new THREE.Vector3(v.x,v.y,v.z).applyQuaternion(rot).add(pos));
       handGroup.add(new THREE.Points(new THREE.BufferGeometry().setFromPoints(vertices),new THREE.PointsMaterial({color:side==='left'?0xffaa77:0x99ddff,size:.015})));
       const pairs=[];for(let i=0;i<(handSkeletons[side]?.bones.length||0);i++){const parent=handSkeletons[side].bones[i].parent;if(parent>=0&&parent<vertices.length&&i<vertices.length)pairs.push(vertices[parent],vertices[i]);}

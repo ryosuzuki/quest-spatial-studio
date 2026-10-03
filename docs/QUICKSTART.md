@@ -1,78 +1,78 @@
-# 最初に使うとき
+# Quick start
 
-[トップへ戻る](../README.md) · [撮影手順](RECORDING.md) · [開発ガイド](DEVELOPMENT.md)
+[Back to README](../README.md) · [Recording guide](RECORDING.md) · [Development guide](DEVELOPMENT.md)
 
-## 1. Questで撮る
+## 1. Record on Quest
 
-アプリ名は **Spatial Capture**。旧 **QuestRealityCapture** とは別アプリです。
+The app is named **Spatial Capture**. It is separate from the original **QuestRealityCapture**.
 
-1. [0.1.3テスト版](https://github.com/ryosuzuki/quest-spatial-studio/releases/tag/v0.1.3-test) のAssetsからAPKを取得し、[導入手順](RECORDING.md)でインストールします。すでに0.1.3が入っている場合は不要です。
-2. Questの「提供元不明」からSpatial Captureを起動し、求められた権限を許可します。
-3. 左コントローラのメニューボタンで開始。20秒ほど机を見ながら頭を少し横へ動かします。
-4. コントローラを置いて両手・指を動かし、映像に見える位置で一度拍手します。
-5. コントローラを持ち直して同じボタンで停止し、10秒待ちます。
-6. MacとUSB接続して[回収と検証](RECORDING.md#取り込みと検証)へ進みます。
+1. Download the APK from Assets in the [0.1.3 test release](https://github.com/ryosuzuki/quest-spatial-studio/releases/tag/v0.1.3-test) and follow the [installation instructions](RECORDING.md). Skip this if 0.1.3 is already installed.
+2. Launch Spatial Capture from Unknown Sources on Quest and grant the requested permissions.
+3. Press the left controller's menu button to start. Look at a table for about 20 seconds while moving your head slightly sideways.
+4. Put down the controllers, move both hands and fingers, and clap once where the camera can see it.
+5. Pick up the controller, press the same button to stop, and wait 10 seconds.
+6. Connect to Mac over USB and continue to [retrieval and validation](RECORDING.md#retrieve-and-validate).
 
-録画中はUSB不要です。既存の部屋スキャンはやり直し不要です。現在のAPKはテスト版で、実際のfps・手の連続追跡・音声同期はこの撮影で確認します。
+USB is not needed while recording. Existing room scans do not need to be repeated. The current APK is a test build; this recording is needed to check actual frame rate, continuous hand tracking, and audio synchronization.
 
-## 2. Macで編集画面を試す（Questなしでも可）
+## 2. Try the editor on Mac, with or without Quest
 
-必要：Node.js/npm、Python 3、初回の依存パッケージ取得用インターネット接続。動画の取り込み・検証・書き出しにはFFmpeg/ffprobeも必要です。
+Requirements: Node.js/npm, Python 3, and internet access for the initial dependency download. Video import, validation, and export also require FFmpeg/ffprobe.
 
-リポジトリを取得して、そのフォルダをターミナルで開きます。
+Clone the repository and open its folder in a terminal.
 
 ```sh
 git clone https://github.com/ryosuzuki/quest-spatial-studio.git
 cd quest-spatial-studio
 ```
 
-Macでは **START.command** をダブルクリックするか、リポジトリのルートで `bash START.command` を実行します。初回は依存関係と人工サンプルを準備し、`http://localhost:8787` を開きます。
+On Mac, double-click **START.command** or run `bash START.command` from the repository root. On first launch, it prepares dependencies and a synthetic sample, then opens `http://localhost:8787`.
 
-- 左：撮影カメラからの映像合成。
-- 右：自由に回して見られる3D空間とカメラ軌跡。
-- 3D空間の矢印をドラッグ：物体の位置を変更。
-- 初期サンプルは人工データです。自宅の録画・部屋データは含まれません。
+- Left: video composited from the recording camera's viewpoint.
+- Right: a freely navigable 3D scene and camera trajectory.
+- Drag the arrows in the 3D scene to move the object.
+- The initial sample is synthetic. It contains no home recordings or room data.
 
-手動起動は[READMEのコマンド](../README.md#まず編集画面を試すquest不要)を使います。こちらはポート **8766**。START.commandの **8787** と混同しないでください。
+For manual startup, use the [README commands](../README.md#try-the-editor-without-quest). These use port **8766**, not the **8787** used by START.command.
 
-## 3. 部屋だけを見る
+## 3. View the room alone
 
-START.commandで起動した後、`http://localhost:8787/room.html` を開きます。ファイル選択で回収した `room-geometry.json` または `room-geometry-latest.json` を指定します。
+After launching START.command, open `http://localhost:8787/room.html`. Use the file picker to select the retrieved `room-geometry.json` or `room-geometry-latest.json`.
 
-部屋のデータはGitHubにありません。自分のQuestから回収したJSONが必要です。別の起動・撮影で取得した映像への自動位置合わせは行いません。
+Room data is not on GitHub. You need JSON retrieved from your own Quest. There is no automatic alignment with video captured during another app launch or recording.
 
-## 4. 自分の動画を編集・書き出す
+## 4. Edit and export your video
 
-[撮影手順の「編集用に取り込む」](RECORDING.md#編集用に取り込む)へ進みます。手動コマンドはポート8766を前提にしています。START.commandを使う場合は表示URLを8787に読み替えます。
+Continue to [Import for editing](RECORDING.md#import-for-editing) in the recording guide. Manual commands assume port 8766. If using START.command, substitute 8787 in the viewing URL.
 
-## 困ったとき
+## Troubleshooting
 
-- **アプリが見つからない：** 「提供元不明」を開き、Spatial Captureを探します。旧アプリとは名前が違います。
-- **ADBでunauthorized：** Quest内のUSBデバッグ許可を確認。USBケーブルはデータ通信対応を使います。
-- **部屋が空：** 空間データの権限とQuestの部屋設定を確認し、ヘッドセットを装着して位置認識を待ちます。成功ステータスだけでなく形状ファイルも確認します。
-- **動画が空・再生できない：** 0.1.3を使い、停止後10秒待って回収し、検証スクリプトを実行します。メタデータがあるだけでは録画成功とは扱いません。
-- **映像が上下逆／配置がずれる：** インポート時の向きと座標系を確認します。別セッションの部屋を混ぜないでください。
-- **ページが開かない：** 起動した方式のポート（8787または8766）とターミナルのエラーを確認します。
+- **Cannot find the app:** Open Unknown Sources and look for Spatial Capture. Its name differs from the original app.
+- **ADB reports unauthorized:** Check the USB debugging permission inside Quest. Use a data-capable USB cable.
+- **Room is empty:** Check spatial-data permission and Quest room settings, then wear the headset and wait for localization. Check the geometry file, not just the success status.
+- **Video is empty or unplayable:** Use 0.1.3, wait 10 seconds after stopping, retrieve the files, and run the validator. Metadata alone does not prove a successful recording.
+- **Video is upside down or placement is misaligned:** Check import orientation and coordinate systems. Do not mix rooms from different sessions.
+- **Page will not open:** Check the port for your startup method (8787 or 8766) and terminal errors.
 
-## デジタルツインでデバッグする
+## Debug with the digital twin
 
-左右の画面は同じ物体・カメラ時刻を共有します。
+Both panes share the same object and camera timeline.
 
-1. 撮影セッションを開き、同じセッションの部屋形状を読み込みます。
-2. タイムラインを動かすと、左の録画映像と右の記録カメラ位置・向きが更新されます。
-3. 右の矢印をドラッグすると、物体の3D位置が変わり、左の合成映像にも反映されます。Scale / Yawでも大きさ・回転を編集できます。
-4. Trajectory / Camera / Handsで補助表示を切り替え、Reset viewで視点を戻します。軌跡と座標は記録されたカメラのものです（頭の中心と同一とは限りません）。
-5. Video panelを有効にすると、3D空間内でも合成映像を見られます。手は対応する有効な記録サンプルがある区間のみ表示します。
-6. Save placementで配置を保存し、撮影手順の書き出しコマンドで動画へ反映できます。
+1. Open a recording session and load room geometry from that same session.
+2. Scrub the timeline to update the recorded video on the left and the recorded camera position/orientation on the right.
+3. Drag the arrows on the right to change the object's 3D position and update the composite on the left. Scale / Yaw also adjust size and rotation.
+4. Toggle overlays with Trajectory / Camera / Hands, and restore the viewpoint with Reset view. The trajectory and coordinates belong to the recorded camera, which may not be at the center of the head.
+5. Enable Video panel to view the composite within the 3D scene. Hands appear only where matching, valid recorded samples exist.
+6. Use Save placement to save the layout, then use the recording guide's export command to apply it to a video.
 
-これは配置のインタラクティブ編集です。ドラッグ動作を時間付きアニメーションとして記録する機能や、自動物体追跡ではありません。
+This is interactive placement editing. It does not record drag movements as timed animation or automatically track objects.
 
 ### WebXR
 
-対応ヘッドセットのブラウザから信頼されたHTTPSで配信した編集画面を開き、VRボタンで入ります。通常のMacのlocalhost URLはQuestからはアクセスできません。START.commandはMacローカル専用で、HTTPS配信・接続設定は含みません。
+Open the editor, served over trusted HTTPS, in a supported headset browser and enter with the VR button. The Mac's usual localhost URL is not accessible from Quest. START.command is Mac-local only; it does not configure HTTPS hosting or headset connectivity.
 
-XRでは部屋・軌跡に加えて映像パネルを表示します。コントローラを映像パネルへ向けて選択すると再生／停止、それ以外へ向けて選択すると現在の高さの水平面上で物体を配置します。現在の実装はデスクトップ検証済み・ヘッドセット未検証です。実空間への自動位置合わせやパススルーARを保証するものではありません。
+XR shows the video panel alongside the room and trajectory. Point a controller at the video panel and select to play/pause; point elsewhere and select to place the object on a horizontal plane at its current height. The current implementation is desktop-tested but unverified in a headset. It does not guarantee automatic real-world alignment or passthrough AR.
 
-### 音声
+### Audio
 
-録音は撮影フォルダの `audio.wav` に保存され、`audio-timing.json` を使って編集側で映像と合わせます。生のカメラMP4に音声が最初から埋め込まれているわけではありません。Play audioで再生音声を切り替えます。同期は推定値なので、映像に見える拍手などで検証してください。
+Audio is recorded to `audio.wav` in the take folder and aligned with video in the editor using `audio-timing.json`. It is not initially embedded in the raw camera MP4. Toggle playback audio with Play audio. Synchronization is estimated; verify it with a visible clap or similar cue.
