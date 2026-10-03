@@ -5,17 +5,17 @@
     {
       "file": "botanical.png",
       "status": "rejected for compositing; opaque backdrop retained as generation history",
-      "prompt": "Transparent botanical mural texture: one integrated airy branching vine of ferns, tiny white flowers, emerald leaves, golden roots and blue butterflies. No wall, room, shelf, text or border."
+      "prompt": "Use case: illustration-story. Asset type: transparent botanical mural texture for an augmented reality wall. Create a spectacular delicate hand-painted botanical ecosystem growing along an invisible horizontal shelf: curling fern fronds, tiny luminous white flowers, emerald leaves, thin golden root networks, a few miniature blue butterflies. Entire composition is ONE integrated long organic branching vine, spacious and airy with lots of genuinely transparent negative space BETWEEN leaves. Fine scientific botanical illustration meets magical realism. Soft white and pale jade accents readable over a beige indoor wall. Wide 3:2 landscape composition. No wall, no room, no shelf, no scene background, no rectangular card, no text, no border, no shadow rectangle. Asset will be projected onto a real wall and progressively revealed as a growing mural; keep roots along bottom, branching growth upwards, beautiful high-detail leaves."
     },
     {
       "file": "botanical-cutout.png",
       "status": "adopted; RGBA alpha verified",
-      "prompt": "Keep exact botanical subject. Remove blurred green, gold, gray and black background. Actual transparent alpha around and between all leaves, roots and stems. No haze or gradient."
+      "prompt": "Background extraction edit. Keep the exact delicate botanical leaves, white flowers, butterflies, stems, roots and their colors. REMOVE every part of the blurred green, gold, gray and black background. Output ONLY the sharply defined botanical subject as an isolated cutout with actual fully transparent alpha around and BETWEEN ALL leaves, flowers, roots and stems. No filled backdrop at all; no green haze or gradient. This image is used as an AR decal on real walls and cannot include a rectangular or tinted background."
     },
     {
       "file": "winter-garden.png",
       "status": "adopted as generated speculative view inside existing window pane geometry",
-      "prompt": "Photorealistic moonlit Colorado garden after snowfall, frost-coated branches, spruce trees, snowy ground, distant warm lights, blue-hour sky. No window frames, room, text or borders."
+      "prompt": "Use case: photorealistic-natural. Asset type: animated AR window-view texture, background plate only. A tranquil moonlit Colorado garden after fresh snowfall, looking outward from an ordinary house: fine frost-coated deciduous branches in foreground, blue spruce trees, soft rolling snowy ground, distant warm porch lights, delicate sparse falling snow. Blue hour sky blending indigo to pale cyan. Highly realistic rich photographic detail, magical but believable wintry atmosphere. Square composition, natural eye-level camera. NO window frames, NO walls, NO room, NO text, NO people, NO borders. This outdoor image will be mapped behind the actual window mullions in a recorded real room."
     }
   ]
 }

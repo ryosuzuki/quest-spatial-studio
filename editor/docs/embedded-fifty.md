@@ -57,3 +57,7 @@ Run root: `/Users/ryosuzuki/Storage/outputs/quest-spatial-studio/2026-10-02/embe
 Contains 50 MP4s, a numbered viewing gallery, catalog, exact per-video frame maps, authored anchor vertices and reference pixels, three sampled check images per study, validation results and hashes. A numbered reel and a portable ZIP are derived for delivery. Canonical workspace receipts belong under `stuff/2026/2026-10-03/`; daily memory under `memory/2026/2026-10-03.md`.
 
 Owning skill is **research-arvideo**. No new standalone skill was created.
+
+## Size-Bounded Delivery
+
+Run `python3 scripts/slack-embedded-fifty.py` after packaging and generating the reel. It preserves originals, creates 640px review videos and a separate 640px reel, fully decodes all derivatives, and requires each delivered attachment to be below 16 MiB. The self-contained review ZIP has all 50 clips and its own offline gallery; its full-reel link is intentionally removed because the reel is delivered separately. Generated-asset provenance contains the exact prompts and whether a candidate was rejected.
