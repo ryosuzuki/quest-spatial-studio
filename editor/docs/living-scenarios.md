@@ -28,3 +28,11 @@ Renderer: `scripts/render-living-scenarios.mjs`; source: `src/living-scenarios.m
 ## Figure and paper updates
 
 Use exact exported-video frames, source timestamps from frame-map.json, and interaction-verification.json. Separate recorded input, authored scenario content, browser input, and generated artwork in captions. Do not claim live generative behavior, 6DoF bottle tracking, quantitative registration accuracy, semantic page recognition, or automatic agent orchestration. Keep all GitHub and manuscript text in English.
+
+## Speech and acoustic interaction extension
+
+Inspired by [RealityTalk](https://ryosuzuki.org/realitytalk/) (UIST 2022) and [RealitySketch](https://ryosuzuki.org/realitysketch/) (UIST 2020), inspected 2026-10-02.
+
+Start microphone explicitly to enable a local Web Audio transient detector. A sudden loud impulse launches expanding 3D waves from the room's table. This is a threshold-based clap-like sound trigger, not a trained clap classifier: speech, taps or other transients can also trigger it. Stop microphone releases all tracks and the audio context. Browser SpeechRecognition, where available, sends interim/final recognition text to the room-anchored wall panel; select English or Japanese. Browser speech may use the vendor's remote service. No microphone starts automatically.
+
+Typed text and Preview spatial pulse are separate, explicitly labeled fallback/demo inputs. The six-second speech-pulse preview uses these inputs, not recorded speech or a real clap. The detector unit test covers silence, transient triggering and refractory gating. Browser UI text/pulse paths were checked; real microphone recognition quality/latency and actual clap discrimination remain unverified.

@@ -1,3 +1,4 @@
+import {createSpatialAudio} from './spatial-audio.mjs';
 import {createWorld} from './living-models.mjs';
 import * as T from 'three';
 import {setPose,frameAt} from './math.mjs';
@@ -47,6 +48,12 @@ const dome=mesh(observatory,new T.SphereGeometry(.18,32,16,0,Math.PI*2,0,Math.PI
 for(let j=0;j<12;j++){const a=j*Math.PI/6;mesh(observatory,new T.CylinderGeometry(.009,.009,.28,8),gold,[.18+Math.cos(a)*.15,.48,-.2+Math.sin(a)*.15]);}
 const portal=mesh(backWorld.solid,new T.PlaneGeometry(1.35,.9),new T.MeshBasicMaterial({map:portalTexture,side:T.DoubleSide,toneMapped:false}),[0,.71,-.49]);
 const portalRim=mesh(backWorld.solid,new T.BoxGeometry(1.40,.95,.025),gold,[0,.71,-.51]);
+const speechCanvas=document.createElement('canvas');speechCanvas.width=1536;speechCanvas.height=512;const speechCtx=speechCanvas.getContext('2d');const speechTexture=new T.CanvasTexture(speechCanvas);speechTexture.colorSpace=T.SRGBColorSpace;
+const speechPanel=mesh(notifications,new T.PlaneGeometry(1.5,.5),new T.MeshBasicMaterial({map:speechTexture,transparent:true,side:T.DoubleSide,toneMapped:false}),[0,-.85,.1]);speechPanel.visible=false;
+window.spatialText=({text,kind='typed-preview'})=>{speechCtx.clearRect(0,0,1536,512);speechCtx.fillStyle='#081e2be8';speechCtx.fillRect(0,0,1536,512);speechCtx.fillStyle='#7ee7dc';speechCtx.font='34px Arial';speechCtx.fillText(kind==='browser-speech'?'LIVE SPEECH':'TEXT PREVIEW',48,60);speechCtx.fillStyle='#ffffff';speechCtx.font='56px sans-serif';const chars=[...text];for(let i=0;i<Math.min(chars.length,160);i+=40)speechCtx.fillText(chars.slice(i,i+40).join(''),48,145+Math.floor(i/40)*85);speechTexture.needsUpdate=true;speechPanel.visible=true;window.lastSpatialText={text,kind};};
+let pulseStart=-10;const waves=[];for(let j=0;j<5;j++){const m=mesh(content,new T.TorusGeometry(1,.008,8,96),new T.MeshBasicMaterial({color:j%2?'#ffc87e':'#6fe8dc',transparent:true,opacity:.8}));m.rotation.x=-Math.PI/2;m.position.set(2.39,-.75+j*.12,-2.61);m.visible=false;waves.push(m);}
+window.spatialImpulse=event=>{pulseStart=performance.now()/1000;window.lastSpatialImpulse=event;};
+window.spatialAudio=createSpatialAudio({onText:window.spatialText,onImpulse:window.spatialImpulse,onStatus:t=>{const el=document.querySelector('#audio-status');if(el)el.textContent=t;}});
 const cloned=content.clone();twin.add(cloned);
 c.addEventListener('pointerdown',()=>{window.livingState.expanded=!window.livingState.expanded;window.renderNewTake(window.livingState.time);});
 
@@ -61,6 +68,7 @@ function txt(t,x,y,size=18,col='#d3e4ef',bold=false){ctx.fillStyle=col;ctx.font=
 function copyTransforms(a,b){b.position.copy(a.position);b.quaternion.copy(a.quaternion);b.scale.copy(a.scale);b.visible=a.visible;a.children.forEach((x,i)=>copyTransforms(x,b.children[i]));}
 window.renderNewTake=async t=>{const i=frameAt(s.frames,t),f=s.frames[i];await frame(i);setPose(cam,f,s.intrinsics);const h=sampleAt(Number(f.timestampUs)/1000);depthTarget.visible=false;const depthRay=new T.Vector3(0,-.35,.5).unproject(cam).sub(cam.position).normalize();depthTarget.position.copy(cam.position).addScaledVector(depthRay,.95);depthTarget.rotation.set(f.t*.25,f.t*.35,0);const pinch=!!(h&&['left','right'].some(k=>h[k]?.valid&&h[k]?.tracked&&Math.abs(h.ovrSeconds-h[k].sampleTimestamp)<.15&&h[k]?.pinches));
 arm.rotation.z=.6*Math.sin(f.t*3.5);orbiters.forEach(({p,r},j)=>p.position.set(Math.cos(f.t*(.7+j*.35))*r,0,Math.sin(f.t*(.7+j*.35))*r));wallOrb.rotation.set(f.t*.4,f.t*.7,0);wallOrb.scale.setScalar(pinch?1.7:1);teal.emissive.set(pinch?'#176a64':'#000000');
+const age=performance.now()/1000-pulseStart;waves.forEach((w,j)=>{const a=age-j*.12;w.visible=a>=0&&a<2.5;if(w.visible){w.scale.setScalar(.1+a*.95);w.material.opacity=Math.max(0,1-a/2.5);}});
 const expanded=pinch||window.livingState.expanded;backWorld.update(t,{energy:.3,expand:expanded?1:0,drag:t*.1});
 const mode=window.livingState.mode==='auto'?(t<25?'lego':t<53?'origami':t<73?'solar':'photo'):window.livingState.mode;
 for(const [id,w] of Object.entries(worlds)){w.root.visible=id===mode;w.update(t,{energy:pinch?1:0.15,expand:expanded?1:0,drag:Math.sin(t*.13)*.35});}
