@@ -7,7 +7,7 @@ if [ ! -f sessions/demo/session.json ]; then
   .venv/bin/pip install -r requirements.txt
   .venv/bin/python scripts/demo.py
 fi
-if ! curl -fsS http://127.0.0.1:8766/index.html >/dev/null 2>&1; then
- nohup python3 -m http.server 8766 --bind 127.0.0.1 > /tmp/quest-spatial-studio-server.log 2>&1 &
+if ! curl -fsS http://127.0.0.1:8787/index.html >/dev/null 2>&1; then
+ nohup python3 -m http.server 8787 --bind 127.0.0.1 > /tmp/quest-spatial-studio-server.log 2>&1 &
 fi
-open http://127.0.0.1:8766
+open http://127.0.0.1:8787

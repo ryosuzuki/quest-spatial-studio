@@ -250,9 +250,15 @@ namespace RealityLog.Recording
                                     Path.Combine(paths.RootDirectoryPath, name), width, height);
                                 videoEncoders.Add(name, encoder);
                             }
-                            var bytes = colors.Reinterpret<byte>(4).ToArray();
-                            if (encoder.Call<bool>("enqueue", bytes, timestampUs)) fileName = name;
-                            else error = AppendError(error, "video_queue_rejected");
+                            // GetColors may expose a larger backing allocation. Pass only the actual frame,
+                            // without JNI's per-element byte[] marshaling on the Unity render thread.
+                            var frameBytes = colors.GetSubArray(0, expectedPixelCount).Reinterpret<byte>(4);
+                            var localBuffer = AndroidJNI.NewDirectByteBuffer(frameBytes);
+                            try {
+                                using var buffer = new AndroidJavaObject(localBuffer);
+                                if (encoder.Call<bool>("enqueueDirect", buffer, timestampUs)) fileName = name;
+                                else error = AppendError(error, "video_queue_rejected");
+                            } finally { AndroidJNI.DeleteLocalRef(localBuffer); }
                         }
                         else
                         {

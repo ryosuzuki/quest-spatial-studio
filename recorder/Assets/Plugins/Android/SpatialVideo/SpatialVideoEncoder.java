@@ -29,6 +29,12 @@ public final class SpatialVideoEncoder {
         if(origin<0) origin=cameraUs;
         last=cameraUs;accepted++;return true;
     }
+    public synchronized boolean enqueueDirect(ByteBuffer source,long cameraUs) {
+        if (stopping||!error.isEmpty()||source.remaining()!=width*height*4||cameraUs<=last) return false;
+        if(queue.remainingCapacity()==0){dropped++;return false;}
+        byte[] frame=new byte[width*height*4];source.duplicate().get(frame);
+        return enqueue(frame,cameraUs);
+    }
     public String finish() {
         stopping=true;
         try { worker.join(15000); } catch(InterruptedException e) { Thread.currentThread().interrupt(); }
