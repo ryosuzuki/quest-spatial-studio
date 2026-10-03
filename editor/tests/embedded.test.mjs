@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {projectPoint,inverse3,inside,validateProject} from '../src/embedded-math.mjs';
+test('surface authoring roundtrip under projective camera motion',()=>{const h=[[1.2,.1,30],[-.03,.9,20],[.0003,-.0002,1]];for(const p of [[10,30],[420,180],[620,600]]){const r=projectPoint(inverse3(h),projectPoint(h,p));assert.ok(Math.hypot(r[0]-p[0],r[1]-p[1])<1e-8)}});
+test('hit-testing follows target polygon, not its bounding box',()=>{const p=[[0,0],[100,20],[70,100],[20,60]];assert.equal(inside([50,50],p),true);assert.equal(inside([98,98],p),false);assert.equal(inverse3([[0,0,0],[0,0,0],[0,0,0]]),null)});
+test('project import rejects external media paths and bad tracks',()=>{assert.throws(()=>validateProject({version:1,scenes:[{frames:'https://example.com/'}]}));assert.throws(()=>validateProject(null))});
