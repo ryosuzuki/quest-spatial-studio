@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-02",
+  "scenarioVideo": {
+    "filename": "living-room-scenarios.mp4",
+    "sha256": "e8ca6dd4e9a736742294d0e63417861e104875a743e957470bc653759e89308a",
+    "exportFps": 15,
+    "panels": [
+      {
+        "title": "Brick assembly",
+        "outputFrameZeroBased": 142,
+        "outputTimeSeconds": 9.466666666666667,
+        "cropXYXY": [
+          0,
+          105,
+          900,
+          822
+        ],
+        "sourceMetadata": {
+          "outputTime": 9.466666666666667,
+          "sourceFrame": 110,
+          "sourceTime": 9.417413,
+          "timestampUs": "1790999653174206",
+          "pinch": false,
+          "mode": "lego",
+          "expanded": false,
+          "staticOcclusion": true,
+          "bottleTrack": false,
+          "depthRestoredPixels": 13196
+        }
+      },
+      {
+        "title": "Paper crane",
+        "outputFrameZeroBased": 600,
+        "outputTimeSeconds": 40.0,
+        "cropXYXY": [
+          0,
+          105,
+          900,
+          822
+        ],
+        "sourceMetadata": {
+          "outputTime": 40,
+          "sourceFrame": 451,
+          "sourceTime": 39.945335,
+          "timestampUs": "1790999683702128",
+          "pinch": true,
+          "mode": "origami",
+          "expanded": true,
+          "staticOcclusion": true,
+          "bottleTrack": false,
+          "depthRestoredPixels": 30864
+        }
+      },
+      {
+        "title": "Solar system",
+        "outputFrameZeroBased": 900,
+        "outputTimeSeconds": 60.0,
+        "cropXYXY": [
+          0,
+          105,
+          900,
+          822
+        ],
+        "sourceMetadata": {
+          "outputTime": 60,
+          "sourceFrame": 616,
+          "sourceTime": 59.903699,
+          "timestampUs": "1790999703660492",
+          "pinch": false,
+          "mode": "solar",
+          "expanded": false,
+          "staticOcclusion": true,
+          "bottleTrack": false,
+          "depthRestoredPixels": 34913
+        }
+      },
+      {
+        "title": "Miniature observatory",
+        "outputFrameZeroBased": 1260,
+        "outputTimeSeconds": 84.0,
+        "cropXYXY": [
+          0,
+          105,
+          900,
+          822
+        ],
+        "sourceMetadata": {
+          "outputTime": 84,
+          "sourceFrame": 815,
+          "sourceTime": 83.94464,
+          "timestampUs": "1790999727701433",
+          "pinch": false,
+          "mode": "photo",
+          "expanded": false,
+          "staticOcclusion": true,
+          "bottleTrack": false,
+          "depthRestoredPixels": 10656
+        }
+      }
+    ]
+  },
+  "editorRecording": {
+    "filename": "Screen Recording 2026-10-02 at 10.36.20\u202fPM.mov",
+    "sha256": "31042c6d119c9961aa08573e2a033aac519c02a8c915095f5991aa75737dc956",
+    "slackFileId": "F0C6F9DDAM8",
+    "slackMessage": "https://programmable-reality.slack.com/archives/C08RK4K26AV/p1791002447977319",
+    "frames": [
+      {
+        "output": "recorded-editor-before.jpg",
+        "timeSeconds": 2
+      },
+      {
+        "output": "recorded-editor-after.jpg",
+        "timeSeconds": 10
+      }
+    ],
+    "cropXYXY": [
+      0,
+      167,
+      3420,
+      2034
+    ],
+    "interpretation": "Both images show source frame 1/915. Translation and scale differ. This is an actual user screen recording, not a latency benchmark."
+  },
+  "processing": "Video-frame extraction, crop, resize, JPEG encoding, and external panel labels only. No generative retouching.",
+  "images": {
+    "living-scenarios.jpg": "8162040c13a87c8db52096e6c73352ea72682a93a20a0d94c011d078d472eca6",
+    "recorded-editor-after.jpg": "b50039f089bde79b34d812e21e861967aa53edac48094ef98aabab8c355e8dea",
+    "recorded-editor-before.jpg": "1edb888fe6a89400e70a9ad5de215665e03bb636a7d20a1c5aa1c703d5d1349e"
+  }
+}

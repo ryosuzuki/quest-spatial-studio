@@ -6,7 +6,7 @@ Source take: `20261002_215403` (private). This is a real 95-second headset recor
 
 915 unique decoded camera frames at 1280 × 1280, 9.6098 measured fps; 95.84 seconds of mono audio; 2,300 hand-log rows; 2,160 head-pose rows; two unnamed exported rooms. All 969 retrieved source files passed SHA-256 comparison between the retrieval Mac and editing workstation. The recorded SDK log rate is not a unique hand-observation rate. Encoder queue drops: 1,403.
 
-Original footage, depth, room geometry, audio, derived masks, and the exported home-scene videos are private and excluded from Git. Source data remains on the Quest and retrieval Mac.
+Original footage, depth, room geometry, audio, derived masks, and the exported home-scene videos are private and excluded from Git. Selected stills from the scenario export and the daily-demo editor recording are included in [the demo gallery](figures/README.md). Source data remains on the Quest and retrieval Mac.
 
 ## Two complementary demonstrations
 

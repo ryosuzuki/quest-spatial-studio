@@ -2,7 +2,13 @@
 
 An experimental workspace for recording once on Quest, then editing AR videos using room geometry and camera trajectories.
 
-**Work in progress. Implemented code, successful builds, and successful on-device capture are separate milestones.** See [STATUS.md](docs/STATUS.md) for current verification results. This repository does not contain home videos, audio, room scans, or credentials.
+**Work in progress. Implemented code, successful builds, and successful on-device capture are separate milestones.** See [STATUS.md](docs/STATUS.md) for current verification results. Selected demo stills are included below; original recordings, audio, room-scan files, and credentials remain outside Git.
+
+## Latest recorded-room scenarios
+
+![Four AR scenarios over a real Quest recording: brick assembly, pinch-responsive crane, solar system, and miniature observatory](docs/figures/living-scenarios.jpg)
+
+Actual frames from the latest 95-second scenario export: **brick assembly, a recorded-pinch-responsive crane, a solar-system explanation, and a miniature observatory with notification previews**. The replay combines recorded camera poses and room context with authored Three.js geometry. The observatory also uses offline-generated artwork; the crane is camera-relative during the hand segment. [Scenario behavior and controls](editor/docs/living-scenarios.md) · [Frame sources and provenance](docs/figures/README.md)
 
 ## Start here
 
@@ -25,7 +31,9 @@ This repository is private. Viewing it or downloading the APK requires signing i
 
 The recorded video on the left is synchronized with the 3D scene on the right. Object placement changes also appear in the composited video. Inspect the trajectory, camera poses, and hand logs, or preview the video inside the 3D scene. WebXR controls are implemented but have not been verified in a headset.
 
-![Synchronized editor (tested with synthetic data, not home recordings)](docs/digital-twin-preview.png)
+![Actual Quest recording on the left and the editable scanned-room twin on the right, from the latest daily-demo screen recording](docs/figures/recorded-editor-after.jpg)
+
+From Ryo's October 2 **#daily-demo screen recording**: the recorded-camera composite and scanned-room twin share the same editable object. [Before/after at the same source frame](docs/editor-interaction-demo.md#latest-daily-demo-screen-recording)
 
 [Controls and WebXR requirements](docs/QUICKSTART.md#debug-with-the-digital-twin)
 

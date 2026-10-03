@@ -7,6 +7,20 @@ The desktop editor uses **one editable Three.js object transform** in two views:
 
 This is an implemented browser interaction, not a simulated editor video. Moving, scaling or rotating the object updates both panes immediately. Source pixels are unchanged; the composite is rerendered in the browser.
 
+## Latest daily-demo screen recording
+
+These two frames come from Ryo's actual screen recording shared in [#daily-demo](https://programmable-reality.slack.com/archives/C08RK4K26AV/p1791002447977319) on October 2, 2026. Both show **source frame 1/915**. Between the screenshots, object translation and scale change in both the recorded-camera composite and the 3D twin.
+
+**Before — screen recording at 2 seconds**
+
+![Before editing: recorded-camera composite and shared object in the scanned-room twin](figures/recorded-editor-before.jpg)
+
+**After — screen recording at 10 seconds**
+
+![After translation and scale edits: both views show the changed object at the same recorded frame](figures/recorded-editor-after.jpg)
+
+These stills illustrate the shared placement controls. They do not measure response latency or physical registration accuracy. The browser chrome is cropped; the application views are retained. [Image provenance](figures/README.md)
+
 ## Run with your private recording
 
 From `editor/`, install dependencies with `npm ci`, then run `npm start`. Open:

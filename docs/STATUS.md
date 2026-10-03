@@ -7,7 +7,7 @@
 - Editor: dual-view trajectory and shared object placement implemented; browser interaction checks passed, along with 13 unit/integration tests (including MP4 packet/pose matching).
 - WebXR headset view: implemented entry/controller placement, not headset-verified.
 - Dynamic object tracking: not implemented.
-- No home captures or credentials are published in this repository.
+- Selected demo stills are included in this private repository. Raw home captures, audio, room-scan files, and credentials remain excluded.
 
 Repository validation: 13 automated tests and desktop browser smoke checks passed. Imported Unity YAML/meta files retain upstream-generated trailing whitespace; task-authored source whitespace checks are scoped separately. Integration target: main; completion owner: OpenClaw.
 
