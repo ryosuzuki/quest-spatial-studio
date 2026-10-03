@@ -17,7 +17,7 @@ def select_quest(adb, serial=None):
         model = run([adb, '-s', item, 'shell', 'getprop', 'ro.product.model'])
         if model in ('Quest 3', 'Quest 3S'): matches.append(item)
     if len(matches) != 1:
-        raise ValueError('接続・USB許可済みのQuest 3/3Sを1台だけ接続してください。複数台なら --serial で指定。ほかの端末には変更しません。')
+        raise ValueError('Connect exactly one USB-authorized Quest 3/3S, or select one with --serial. Other devices will not be modified.')
     return matches[0]
 
 def safe_sessions(names):
@@ -30,7 +30,7 @@ def main():
     parser.add_argument('--row-order', choices=['bottom-up','top-down'], default='bottom-up')
     a=parser.parse_args()
     adb=os.environ.get('ADB') or shutil.which('adb') or str(Path.home()/'Library/Android/sdk/platform-tools/adb')
-    if not Path(adb).is_file(): raise ValueError('ADBが見つかりません: Android Platform Toolsが必要です。')
+    if not Path(adb).is_file(): raise ValueError('ADB not found. Install Android Platform Tools.')
     serial=select_quest(adb,a.serial); prefix=[adb,'-s',serial]
     if a.action=='setup':
         subprocess.run(['bash',str(ROOT/'recording/install.sh'),serial],env={**os.environ,'ADB':adb},check=True)
@@ -41,14 +41,14 @@ def main():
         result=subprocess.run(prefix+['shell','test','-f',f'{REMOTE}/{name}/session_info.json'],capture_output=True)
         if result.returncode==0:sessions.append(name)
     if a.session:
-        if a.session not in sessions:raise ValueError('指定セッションが見つかりません。')
+        if a.session not in sessions:raise ValueError('The requested session was not found.')
         name=a.session
-    elif not sessions: raise ValueError('録画がありません。ヘッドセット内で短い録画を開始・停止してから再実行してください。')
+    elif not sessions: raise ValueError('No recordings found. Start and stop a short recording in the headset, then run this command again.')
     else:
-        print('録画を停止済みのセッションを選択してください:')
+        print('Select a session whose recording has stopped:')
         for i,n in enumerate(sessions):print(f'{i+1}: {n}')
-        index=int(input('番号: '))-1
-        if not 0<=index<len(sessions):raise ValueError('範囲外の番号です。')
+        index=int(input('Session number: '))-1
+        if not 0<=index<len(sessions):raise ValueError('Session number is out of range.')
         name=sessions[index]
     stamp=datetime.datetime.now().strftime('%Y%m%d-%H%M%S-%f')
     raw=ROOT/'captures'/stamp/name;raw.parent.mkdir(parents=True)
@@ -60,8 +60,8 @@ def main():
     (destination/'import-receipt.json').write_text(json.dumps(receipt,indent=2))
     relative=destination.relative_to(ROOT).as_posix()+'/session.json'
     (ROOT/'sessions/latest.txt').write_text(relative)
-    print(f"取り込み完了: {manifest['report']['accepted']} フレーム。元データは captures/ に保存。\n画像の上下と実機精度は確認が必要です。")
-    print('START.command でこのセッションを開けます。')
+    print(f"Import complete: {manifest['report']['accepted']} frames. Original data is saved in captures/.\nImage orientation and physical alignment still need verification.")
+    print('Open this session with START.command.')
 
 if __name__=='__main__':
     try:main()

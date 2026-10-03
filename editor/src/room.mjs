@@ -14,7 +14,7 @@ function load(doc){
  const box=new THREE.Box3().setFromObject(room),center=box.getCenter(new THREE.Vector3()),size=box.getSize(new THREE.Vector3());
  const radius=Math.max(size.x,size.y,size.z,1);orbit.target.copy(center);camera.position.copy(center).add(new THREE.Vector3(.65,.8,1).multiplyScalar(radius));orbit.update();filter();
  const vertices=doc.parts.reduce((n,p)=>n+p.vertices.length/3,0),triangles=doc.parts.reduce((n,p)=>n+p.triangles.length/3,0);
- document.querySelector('#status').textContent=`${doc.parts.length} shapes · ${vertices.toLocaleString()} vertices · ${triangles.toLocaleString()} triangles · スキャン形状のみ。以前の映像とは未位置合わせ。`;
+ document.querySelector('#status').textContent=`${doc.parts.length} shapes · ${vertices.toLocaleString()} vertices · ${triangles.toLocaleString()} triangles · Scan geometry only; not aligned with earlier recordings.`;
  window.roomView={ready:true,parts:doc.parts.length,vertices,triangles,bounds:{min:box.min.toArray(),max:box.max.toArray()},room};
 }
 for(const id of ['mesh','bounds'])document.getElementById(id).addEventListener('change',filter);

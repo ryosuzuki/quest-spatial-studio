@@ -61,3 +61,7 @@ Use the [recording instructions](RECORDING.md) and [validation-tool guide](../re
 - Recordings, audio, and room scans stay local. `editor/private/`, `captures/`, `sessions/`, and `exports/` are excluded from Git.
 - `pull.sh` only copies files; it does not delete recordings on Quest.
 - The upstream MIT license is retained at [recorder/LICENSE](../recorder/LICENSE). Unity/Meta SDKs remain subject to their providers' terms.
+
+## Language
+
+Use English for repository documentation, release notes, UI labels, command-line prompts and errors, and new code comments. Keep this consistent when adding features. Preserve upstream names and functional text-rendering resources, including Unicode line-breaking tables.
