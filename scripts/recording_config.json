@@ -1,0 +1,34 @@
+{
+  "camera": {
+    "enabled": true,
+    "backend": "MRUK",
+    "targetSaveFps": 30,
+    "left": {
+      "enabled": true
+    },
+    "right": {
+      "enabled": false
+    },
+    "encodeVideo": true
+  },
+  "pose": {
+    "enabled": true,
+    "targetSaveFps": 30
+  },
+  "depth": {
+    "enabled": true,
+    "targetSaveFps": 5
+  },
+  "liveFeedback": {
+    "enabled": true,
+    "coverage": {
+      "enabled": false
+    },
+    "diagnostics": {
+      "enabled": true,
+      "showHud": true,
+      "showTrajectory": false,
+      "showTrackingEvents": true
+    }
+  }
+}
