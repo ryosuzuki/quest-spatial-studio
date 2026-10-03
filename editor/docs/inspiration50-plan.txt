@@ -1,0 +1,303 @@
+FIFTY EMBEDDED AR VIDEO STUDIES — Independent Codex exploration
+Capture: 20261002_215403. Original camera time, no retiming.
+English visual labels. Silent exports. 50 short studies, not 50 complete 95-second films.
+
+01. A message finds its wall
+Target: wall | source 22.00–26.00s
+A quiet OpenClaw update arrives, unfolds one line, then settles into a small completion mark.
+Input: authored preview event
+Inspiration: CAREER; mockup 14
+
+02. Words become part of the room
+Target: wall | source 22.00–26.00s
+A staged spoken sentence is written word by word on the wall; verbs become a small diagram.
+Input: authored preview event
+Inspiration: RealityTalk
+
+03. A conversation leaves three things
+Target: wall | source 22.00–26.00s
+An illustrative conversation reduces to three short lines; the selected line remains while others recede.
+Input: authored preview event
+Inspiration: RealityTalk; GC2
+
+04. Time stretches across the wall
+Target: wall | source 22.00–26.00s
+A thin timeline draws across the wall while a luminous focus ring travels toward the next activity.
+Input: authored preview event
+Inspiration: mockup 14; GC5
+
+05. Updates gather without a screen
+Target: wall | source 22.00–26.00s
+Separate agent events appear as small points; soft connections gather them around one resolved intent.
+Input: authored preview event
+Inspiration: Always-On brief; GC5
+
+06. A sound crosses the wall
+Target: wall | source 22.00–26.00s
+An explicit preview impulse produces rings that propagate over the wall and subside.
+Input: authored preview event
+Inspiration: RealityCanvas
+
+07. Explain it on this wall
+Target: wall | source 22.00–26.00s
+A staged question turns into a growing flow diagram tied to the wall, then highlights its answer.
+Input: authored preview event
+Inspiration: RealityTalk; CAREER
+
+08. The room takes one breath
+Target: wall | source 22.00–26.00s
+A delicate line expands and contracts across the wall, then settles; a calm focus cue.
+Input: authored preview event
+Inspiration: Always-On brief
+
+09. Keep the meaning in place
+Target: wall | source 22.00–26.00s
+A staged question is replaced by a concise English paraphrase in the same wall location.
+Input: authored preview event
+Inspiration: RealityTalk; GC2
+
+10. An idea becomes a route
+Target: wall | source 22.00–26.00s
+A sketch connects four stages on the wall; a traveling point animates the proposed sequence.
+Input: authored preview event
+Inspiration: Dynamicland; RealitySketch
+
+11. The shelf answers where
+Target: shelf | source 83.80–89.50s
+The actual shelf grid is traced; a selected cubby pulses and a short arrow points inside it.
+Input: authored preview event
+Inspiration: Guided Reality; mockup 23
+
+12. Put it back here
+Target: shelf | source 83.80–89.50s
+A ghost placement target forms inside one real cubby; a path leads to it and then resolves.
+Input: authored preview event
+Inspiration: Guided Reality; GC5
+
+13. The shelf remembers its story
+Target: shelf | source 83.80–89.50s
+A chronological trace unfolds across the shelf, linking short words to a highlighted cubby.
+Input: authored preview event
+Inspiration: mockup 2; GC1
+
+14. An organization plan you can see
+Target: shelf | source 83.80–89.50s
+Three cubby groups receive minimal edge colors; a proposed sorting route animates through the actual grid.
+Input: authored preview event
+Inspiration: GC5 Embedded Plan Preview
+
+15. Every cubby is a note
+Target: shelf | source 83.80–89.50s
+A short authored melody lights shelf cells sequentially; notes travel along their physical edges.
+Input: authored preview event
+Inspiration: RealityCanvas; mockup 1
+
+16. A real plant draws on the wall
+Target: plant | source 0.00–2.40s
+Fine generated botanical linework unfurls from the location of the real shelf-top plant, then leaves a quiet care cue.
+Input: authored preview event
+Inspiration: CAREER generated textures; mockup 3
+
+17. Connect a book to an idea
+Target: shelf | source 83.80–89.50s
+A fine thread starts at a real cubby, branches into related ideas, and returns to the chosen cubby.
+Input: authored preview event
+Inspiration: Dynamicland; mockup 19
+
+18. A cleaning plan follows the shelf
+Target: shelf | source 83.80–89.50s
+An edge-bound scanning band passes through cubbies; completed regions become quiet while one region remains.
+Input: authored preview event
+Inspiration: Guided Reality; mockup 32
+
+19. The wall reveals a hidden rhythm
+Target: shelf | source 83.80–89.50s
+Concentric luminous waves sweep across the shelf plane over a faint cubby grid.
+Input: authored preview event
+Inspiration: RealityCanvas
+
+20. Less guidance as you learn
+Target: shelf | source 83.80–89.50s
+Detailed cubby outlines and steps reduce to one faint corner cue over the same shelf.
+Input: authored preview event
+Inspiration: GC3 Skill-Aware Guidance
+
+21. Use this before tomorrow
+Target: fridge | source 14.60–18.20s
+A use-first message appears on the fridge door with three illustrative ingredient names and freshness arcs.
+Input: authored preview event
+Inspiration: mockup 28; CAREER
+
+22. Dinner starts on the fridge
+Target: fridge | source 14.60–18.20s
+Three ingredient lines link into an illustrated meal plan on the real fridge surface.
+Input: authored preview event
+Inspiration: GC3; mockup 28
+
+23. The kitchen receives a task
+Target: fridge | source 14.60–18.20s
+An authored agent request appears on the fridge; a directional arrow and a ready check illustrate a handoff.
+Input: authored preview event
+Inspiration: GC5 Situated Orchestration
+
+24. The door becomes a thermometer
+Target: fridge | source 14.60–18.20s
+An illustrative temperature flow travels along the actual door outline and gathers into a small numeric annotation.
+Input: authored preview event
+Inspiration: embedded visualization; mockup 8
+
+25. A note belongs to the appliance
+Target: fridge | source 14.60–18.20s
+A grocery reminder types directly onto the fridge, followed by a fine underline.
+Input: authored preview event
+Inspiration: Always-On brief; GC1
+
+26. The table helps set itself
+Target: table | source 14.10–18.10s
+Plate and cutlery contours draw onto the actual tabletop as placement guides.
+Input: authored preview event
+Inspiration: Guided Reality; CAREER
+
+27. A gesture becomes an explanation
+Target: table | source 14.10–18.10s
+Recorded hand separation changes the geometry on the real tabletop.
+Input: Recorded separation of valid, fresh left/right hand roots; no inferred pinch.
+Inspiration: RealitySketch
+
+28. A fold lives on the tabletop
+Target: table | source 14.10–18.10s
+A thin paper diagram is projected on the tabletop; a fold line highlights and a 3D flap rotates around it.
+Input: authored preview event
+Inspiration: mockup 11; CAREER
+
+29. Your hands open a small pond
+Target: table | source 14.10–18.10s
+As recorded hands move apart, ripples expand across the real tabletop.
+Input: Recorded separation of valid, fresh left/right hand roots; no inferred pinch.
+Inspiration: RealityCanvas; CAREER
+
+30. A surface becomes a laboratory
+Target: table | source 14.10–18.10s
+An authored puck rolls along a drawn ramp on the real table, leaving force vectors and a motion graph.
+Input: authored preview event
+Inspiration: RealitySketch; augmented physics
+
+31. Show the next physical step
+Target: counter | source 54.60–57.40s
+A proposed preparation path and destination ring appear on the real countertop, resolving into a check.
+Input: authored preview event
+Inspiration: Guided Reality
+
+32. A cabinet quietly names its contents
+Target: cabinet | source 54.60–57.40s
+Borderless labels appear on the real cabinet doors with short stems pointing to their own handles.
+Input: authored preview event
+Inspiration: mockup 7; mockup 18
+
+33. Trace the area that needs care
+Target: counter | source 54.60–57.40s
+A soft hatch follows the actual countertop polygon, then an animated wipe path clears it from one side.
+Input: authored preview event
+Inspiration: Guided Reality; mockup 32
+
+34. Reveal the machine without a panel
+Target: microwave | source 54.60–57.40s
+A line-only conceptual heat-flow explanation animates within the real microwave face.
+Input: authored preview event
+Inspiration: mockup 8; CAREER
+
+35. A handle becomes an instruction
+Target: cabinet | source 54.60–57.40s
+An authored opening arc and arrow appear over the real cabinet surface.
+Input: authored preview event
+Inspiration: Guided Reality
+
+36. The work surface holds the recipe
+Target: counter | source 54.60–57.40s
+A three-step preparation path follows the countertop, with animated direction marks and one active step.
+Input: authored preview event
+Inspiration: CAREER; GC3
+
+37. Objects teach their names
+Target: counter | source 54.60–57.40s
+Three tabletop objects get tiny leader-linked English words; a focus sweep isolates one at a time.
+Input: authored preview event
+Inspiration: GC3 language learning
+
+38. Energy stays with the appliance
+Target: microwave | source 54.60–57.40s
+An illustrative sparkline appears on the appliance face inside a contour highlight.
+Input: authored preview event
+Inspiration: embedded data visualization
+
+39. The same window holds another season
+Target: window | source 53.80–57.00s
+Authored snow and frost-like strokes appear on the real window plane.
+Input: authored preview event
+Inspiration: mockup 30 and 31; RealityCanvas
+
+40. One final check in the right place
+Target: cabinet | source 54.60–57.40s
+A closing checklist appears across the cabinet surface and checks off three proposed steps.
+Input: authored preview event
+Inspiration: Always-On brief; GC5
+
+41. A bottle changes its visual material
+Target: bottle | source 63.90–67.50s
+The tracked green region transitions through an authored palette while the original highlights remain visible.
+Input: measured image track
+Inspiration: CAREER generated appearance; RealitySketch
+
+42. An object draws its own motion
+Target: bottle | source 63.90–67.50s
+The measured bottle centroid leaves a short fading image-space trajectory.
+Input: measured image track
+Inspiration: RealitySketch
+
+43. Motion becomes a visible signal
+Target: bottle | source 63.90–67.50s
+Measured image displacement drives a bottle-attached arc and numeric movement meter.
+Input: measured image track
+Inspiration: RealitySketch
+
+44. Keep the guidance on the object
+Target: bottle | source 63.90–67.50s
+The measured green-region silhouette pulses, with a small arrow tied to the moving region.
+Input: measured image track
+Inspiration: Guided Reality; RealitySketch
+
+45. A movement releases a little magic
+Target: bottle | source 63.90–67.50s
+Particles emit from the tracked bottle location, retaining a fading trail as the bottle moves.
+Input: measured image track
+Inspiration: RealityCanvas
+
+46. A walk turns into a tiny game
+Target: floor | source 90.00–95.10s
+Rotating 3D coins stand over the measured floor plane. The viewer can see the coin path from the recorded viewpoint; no collection event is asserted.
+Input: Recorded camera pose; authored coin placement and rotation
+Inspiration: CAREER Figure 2 generated program
+
+47. The room previews a route
+Target: floor | source 90.00–95.10s
+A luminous route and direction arrows are drawn on the measured floor plane.
+Input: authored preview event
+Inspiration: GC5 Embedded Plan Preview
+
+48. A plan respects the room
+Target: floor | source 90.00–95.10s
+A proposed floor route encounters a marked keep-clear patch and visibly reroutes around it.
+Input: authored preview event
+Inspiration: GC5 Embedded Plan Preview
+
+49. The floor blooms where you pass
+Target: floor | source 90.00–95.10s
+A small procedural garden grows on the measured floor plane as an authored animation.
+Input: authored preview event
+Inspiration: RealityCanvas; CAREER
+
+50. A clap becomes a spatial wave
+Target: floor | source 90.00–95.10s
+An explicit preview impulse launches concentric bands across the measured floor plane.
+Input: authored preview event
+Inspiration: RealityCanvas; user clap scenario

@@ -1,0 +1,84 @@
+FIFTY EMBEDDED AR VIDEO STUDIES
+Independent Codex implementation — 2026-10-03
+
+DELIVERABLE AND SCOPE
+50 distinct short video studies, a searchable/filterable local gallery, individual MP4s, per-frame source/input logs, a sequential reel, editable Three.js source and this handoff. The combined reel is 203.6 seconds. Individual clips are 2.4–5.7 seconds at original source speed. These are visual research sketches for choosing promising experiences; visual polish and physical calibration are not claimed complete. Shelf/counter annotations remain small in the captured view.
+
+The accepted input is the real recorder take 20261002_215403, about 95 seconds / 915 accepted RGB frames. Earlier monocular home footage and generated concept frames are not used as the camera background. All studies reuse subsets of this one recording. They are not 50 new captures or 50 full-length films.
+
+INDEPENDENCE
+The owner explicitly required no interaction with the Mac Studio Codex/OpenClaw Eval Agent. This work uses a separate checkout, quest-spatial-studio-codex-50, cloned from the published GitHub baseline f672486. The own scenario renderer, paint functions, catalog and export scripts were written in that checkout. Shared capture files and existing registered depth/bottle-mask assets are reused as input. No Eval Agent messaging, tasking or progress polling is part of the independent implementation after that instruction. No claim of completely independent raw-data preprocessing is made.
+
+RESEARCH INPUTS
+- mockup-1-ja.txt: the user's original home walkthrough scenarios.
+- Always-On Embedded Proactive Agents in AR.txt: context-relevant assistance embedded in everyday places.
+- ar-home-mockups-2026-10-02.zip and contact-sheet.jpg: earlier appearance/story references only.
+- NSF CAREER, Final/2 Project Description.pdf: 15-page local proposal; generated text, texture, highlights, interfaces, 3D, animation and programs attached to physical context.
+- Programmable Reality Lab/AR and AI/Final.pdf: 36-page local Grand Challenges manuscript, especially the final sketches and embedded plan/situated orchestration ideas. The separate PCS submission PDF is a submission form; it is not treated as the manuscript.
+- RealityTalk: https://ryosuzuki.org/realitytalk/
+- RealitySketch: https://ryosuzuki.org/realitysketch/
+- RealityCanvas: https://ryosuzuki.org/realitycanvas/
+- Guided Reality: https://arxiv.org/abs/2508.03547
+- Dynamicland: https://dynamicland.org/
+These are inspiration sources, not claims of reproducing the original systems or validating new scientific findings.
+
+DESIGN CHOICES
+Content belongs to a physical target: wall, shelf, fridge, worktop, cabinet, microwave, window, floor or moving bottle. White/ivory linework, sparse mint and gold accents, and transparent backgrounds replace opaque cards. Each catalog entry states a target, input, story, source window and inspiration. The 50 effects are explicitly separate implementations rather than only title/color substitutions, although they share visual primitives and surface anchors.
+
+PIPELINE, STEP BY STEP
+1. Preserve the real capture and accepted session manifest. Read the frame timestamp, image, position, quaternion and calibrated intrinsics together.
+2. Use the published editor's math.mjs projection and setPose. Convert world vertices through the inverse recorded camera transform and the calibrated projection. Zero-order hold the image and camera pose as a pair; never smoothly interpolate camera motion over an unchanged frame.
+3. Read the recorded room mesh and 320x320 registered axial depth audit. Pick a target outline manually on an identifiable source frame. Unproject its measured depth into the same origin coordinate frame. A room-mesh ray hit is a fallback where measured depth is missing.
+4. For horizontal worktops/floor, use a horizontal plane supported by a measured surface sample. For walls/appliance fronts, constrain the normal to be vertical. Intersect the manually authored outline rays with this fixed world plane. Raise the overlay 0.018 m off the support. Retain vertices and reference pixels in anchors.json. These authoring constraints are not a substitute for independently measured ground truth.
+5. Paint dynamic transparent CanvasTextures and map them to the world-space Three.js surface geometry. The camera uses each source frame's actual recorded pose. The fold flap and rotating coins use separate executable 3D meshes. Most other studies deliberately augment real surfaces with linework and typography rather than free-floating 3D objects.
+6. Compare virtual axial depth with registered observed depth in the fragment shader. A 0.20 m tolerance reduces coarse depth self-occlusion. This is deliberately conservative and can leak virtual content over nearby foreground surfaces; it is not millimetric occlusion. The first 0.12 m version caused broken/checkered surface graphics and was revised after visual inspection.
+7. For studies 27 and 29, associate the closest hand record within 150 ms and require both hands valid/tracked with sample age below 150 ms. Map the actual separation between hand roots to graphic geometry/ripple extent. No pinch is asserted: this source interval contained valid hand movement but no valid pinch event. Invalid samples fall back to a neutral state and are logged.
+8. For studies 41–45, use measured green-region masks and image centroids from the shared bottle audit. Recolor the mask, outline it, draw a centroid trajectory, or drive an image-displacement meter. These effects follow the observed bottle region in image space; they do not recover rigid bottle rotation/metric 6DoF and do not prove liquid-level recognition.
+9. Notifications, speech/transcription, clap impulses, ingredient names, appliance values, sorting plans and cleaning completion are authored example events. No live OpenClaw, microphone, object classifier or smart-appliance connection is implied. The interactive authoring page supports selection, seeking, replay and custom preview text, not live recognition.
+10. Render 900x900 pixels at 20 output fps to H.264 yuv420p. The source observations are lower rate; repeated source frames are retained in the per-frame logs. Animation runs between observations while the real image/pose pair stays together. Exports are silent; all visible text is English.
+11. Inspect multiple points in representative pilots, correct geometry/visibility, then inspect every study's midpoint and the per-study motion samples. Decode every final MP4 completely. Inspect timestamp mapping, nonempty output, recorded input variation, fixed anchor identity and deterministic seeking. Keep checks in verification.json; do not equate those software checks with metric real-world accuracy.
+12. Assemble the exact 50 clips sequentially with no timing stretch. Link individual stories and input logs through index.html. Hash deliverables after packaging and verify the local copy against the remote manifest.
+
+REPRODUCING ON MAC STUDIO
+SSH: ssh 100.118.73.1
+Run the storage guard first:
+  bash ~/.openclaw/workspace/skills/mac-storage/scripts/check-storage.sh
+Project:
+  /Users/ryosuzuki/Storage/projects/quest-spatial-studio-codex-50
+Private recorded data:
+  editor/sessions/quest-215403/
+Registered depth and bottle data:
+  /Users/ryosuzuki/Storage/outputs/spatial-video-replay/2026-10-02/new-take-215403/audit
+Start the existing replay asset server from editor:
+  PORT=8825 /opt/homebrew/bin/node scripts/serve-living-scenarios.mjs
+Open:
+  http://127.0.0.1:8825/inspiration50.html
+Render chosen studies from editor:
+  IDS=1,27,41 /opt/homebrew/bin/node scripts/render-inspiration50.mjs
+For previews append --preview. Set OUT to a different directory when preserving an earlier render. For all 50 supply IDs 1 through 50 as a comma-separated list.
+Package once all 50 files exist:
+  python3 scripts/package-studies.py
+Verify:
+  python3 scripts/verify-studies.py
+The package/verification scripts currently use the canonical Mac Studio paths above. Update their P/R constants for another machine. Chrome, Playwright, Three.js, ffmpeg and the private capture/audit assets are required. The Git repository intentionally excludes private capture media.
+
+GENERATED ASSET
+Study 16 uses a transparent botanical illustration generated specifically for this work using the built-in image generation tool: ivory/mint pothos linework with fine leaf veins. File editor/assets/inspiration50-botanical.png. The renderer progressively reveals it on a world-space surface. This is an AI-generated bitmap asset on geometry, not a newly captured plant or a 3D reconstructed plant. Original image file ID: exec-8e536275-27fc-41a7-a54b-2bc63f8888fe.png. Its hash is in provenance.json.
+
+KNOWN LIMITATIONS / NEXT ITERATION
+- These short studies explore breadth. They do not yet constitute 50 polished, end-to-end interactive applications or 50 complete stories spanning the entire take.
+- No independent landmark error measurement was performed. A constant world transform proves implementation structure, not perfect visual registration. Look-away/return accuracy and drift need a dedicated held-out physical test.
+- The camera moves rapidly; selected visibility windows are short. Some words and shelf details are too small for a strong hero demo. A closer, slower recording of a chosen target would enable richer narrative staging.
+- The spatial quads are manually authored approximations; object silhouettes other than the bottle region are not automatically segmented. Grid outlines are a manually authored shelf approximation.
+- Depth is coarse, with an explicit 20 cm tolerance. Fine hand/object boundaries can be imperfect.
+- Bottle effects are image tracked. True moving-object 6DoF, page turns, object identity and pose estimation remain separate tasks.
+- No audio was added; staged speech/clap concepts do not prove audio timing or recognition.
+- Coin collection is not claimed in the selected segment. The renderer includes a proximity visibility rule, but the video is presented as a rotating coin path.
+
+HANDOFF
+Owning reusable skill: research-arvideo.
+Dedicated reference: references/independent-fifty-studies.md.
+Canonical working artifacts: Storage/outputs/embedded-ar-inspiration/2026-10-03.
+Flat dated receipt: stuff/2026/2026-10-03/independent-fifty-embedded-ar-studies.md.
+Daily memory: memory/2026/2026-10-03.md.
+The source repository and handoff publication receipts identify exact commits separately. Completion of this exploration does not assert user acceptance of visual quality.
