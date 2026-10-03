@@ -10,3 +10,11 @@
 - No home captures or credentials are published in this repository.
 
 Repository validation: 13 automated tests and desktop browser smoke checks passed. Imported Unity YAML/meta files retain upstream-generated trailing whitespace; task-authored source whitespace checks are scoped separately. Integration target: main; completion owner: OpenClaw.
+
+## Interactive twin follow-up
+
+- Added trajectory/camera/hand visibility controls, camera frame/position readout, reset view and an in-world composite-video panel.
+- Browser interaction test verifies that changing the shared object placement changes composite pixels, scrubbing changes the recorded camera pose, and debug controls / room round-trip work. Synthetic fixture, not physical alignment proof.
+- WebXR video panel and controller play/pause route implemented, not headset-tested. Trusted HTTPS hosting and actual device verification remain necessary; the local launcher is not remote XR deployment.
+- Placement editing is not keyframe animation recording or automatic dynamic-object tracking.
+- Validation: 13 automated tests plus the extended dual-view browser smoke test pass. Integration target main; completion owner OpenClaw.

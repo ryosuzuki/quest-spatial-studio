@@ -5,9 +5,24 @@ try {
  const p=await b.newPage({viewport:{width:1440,height:1500}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
  await p.goto(process.env.TEST_URL || 'http://127.0.0.1:8766/');await p.waitForFunction(()=>window.replay?.ready);
  await p.evaluate(()=>window.replay.at(5.1));
+ assert.match(await p.locator('#pose-status').textContent(),/camera XYZ/);
+ const before=await p.locator('#stage').screenshot();
  // Test actual TransformControls object-change event propagation to the composite inputs.
  await p.evaluate(()=>{const r=window.replay;r.anchor.position.set(.3,.8,-1.2);r.twin.gizmo.dispatchEvent({type:'objectChange'});});
  assert.equal(await p.locator('#x').inputValue(),'0.3000');assert.equal(await p.locator('#y').inputValue(),'0.8000');
+ assert.notDeepEqual(await p.locator('#stage').screenshot(),before,'Moving the object must change the composite pixels');
+ await p.locator('#debug-trajectory').uncheck();
+ assert.equal(await p.evaluate(()=>window.replay.twin.trajectory.visible),false);
+ await p.locator('#debug-trajectory').check();
+ await p.locator('#debug-frustum').uncheck();
+ assert.equal(await p.evaluate(()=>window.replay.twin.frustum.visible),false);
+ await p.locator('#debug-frustum').check();
+ await p.locator('#debug-video').check();
+ assert.equal(await p.evaluate(()=>window.replay.twin.videoPanel.visible),true);
+ const first=await p.evaluate(()=>window.replay.camera.position.toArray());
+ await p.evaluate(()=>window.replay.at(1));
+ assert.notDeepEqual(await p.evaluate(()=>window.replay.camera.position.toArray()),first);
+ await p.locator('#reset-view').click();
  const saved=await p.evaluate(()=>window.replay.placement());assert.deepEqual(saved.position,[.3,.8,-1.2]);
  // Fixture geometry is explicitly synthetic; never a substitute for the scanned home.
  const fixture={version:1,coordinateSystem:'three-rh-y-up-meters',parts:[{label:'TEST_PLANE',source:'synthetic-test-fixture',vertices:[-1,0,-1,1,0,-1,1,0,1,-1,0,1],triangles:[0,1,2,0,2,3]}]};
@@ -17,5 +32,5 @@ try {
  assert.equal(await p.evaluate(()=>window.replay.placement().roomGeometry.parts.length),1);
  const invalid=await p.evaluate(()=>{try{window.replay.loadRoomGeometry({version:1,coordinateSystem:'Unity',parts:[]});return false;}catch{return true;}});assert.ok(invalid);
  assert.deepEqual(errors,[]);await p.screenshot({path:'/tmp/twin-editor-test.png',fullPage:true});
- console.log('PASS: dual view, transform-event propagation, room geometry load/round-trip, rejection of wrong coordinates; synthetic camera path loaded. XR not verified.');
+ console.log('PASS: dual view, transform-event propagation, room geometry load/round-trip, rejection of wrong coordinates; synthetic camera path loaded. Debug toggles, preview panel, camera scrubbing and changed composite pixels verified. XR not verified.');
 } finally {await b.close();}

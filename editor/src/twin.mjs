@@ -14,7 +14,7 @@ export function roomFromGeometry(doc){
   return room;
 }
 
-export function createTwin({canvas,scene,camera,anchor,onMove,getRoom,renderVideo}){
+export function createTwin({canvas,scene,camera,anchor,onMove,getRoom,renderVideo,togglePlayback}){
   const renderer=new THREE.WebGLRenderer({canvas,antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.xr.enabled=true;
   const view=new THREE.PerspectiveCamera(50,1,.01,100);view.position.set(4,3.5,5);
   const orbit=new OrbitControls(view,canvas);orbit.target.set(0,1,0);
@@ -27,6 +27,14 @@ export function createTwin({canvas,scene,camera,anchor,onMove,getRoom,renderVide
   gizmo.addEventListener('objectChange',()=>onMove(anchor.position));
   orbit.addEventListener('change',()=>{if(!renderer.xr.isPresenting)render();});
   let loaded=false,handSamples=[],handSkeletons={};
+  const viewCenter=new THREE.Vector3();
+  const videoTexture=new THREE.CanvasTexture(document.getElementById('stage'));videoTexture.colorSpace=THREE.SRGBColorSpace;
+  const videoPanel=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1),new THREE.MeshBasicMaterial({map:videoTexture,side:THREE.DoubleSide,toneMapped:false}));
+  videoPanel.name='Recorded video preview';videoPanel.visible=false;helper.add(videoPanel);
+  const debugOptions={trajectory:true,frustum:true,hands:true,video:false};
+  function setDebug(options){Object.assign(debugOptions,options);render();}
+  function resetView(){orbit.target.copy(viewCenter);view.position.copy(viewCenter).add(new THREE.Vector3(3,2.5,4));orbit.update();render();}
+
   const handGroup=new THREE.Group();helper.add(handGroup);
   function setHands(samples,schema,skeletons){if(schema.sdkHandSkeletonVersion!=='OpenXR')return false;handSamples=samples;handSkeletons=skeletons;return true;}
   function setHandTime(timestampUs){
@@ -50,6 +58,9 @@ export function createTwin({canvas,scene,camera,anchor,onMove,getRoom,renderVide
     const w=canvas.clientWidth||640,h=canvas.clientHeight||400;
     if(!renderer.xr.isPresenting){renderer.setSize(w,h,false);view.aspect=w/h;view.updateProjectionMatrix();}
     helper.visible=true;
+    trajectory.visible=debugOptions.trajectory;frustum.visible=debugOptions.frustum;handGroup.visible=debugOptions.hands;
+    videoPanel.visible=debugOptions.video||renderer.xr.isPresenting;
+    if(videoPanel.visible)videoTexture.needsUpdate=true;
     debugCamera.matrixWorld.copy(camera.matrixWorld);debugCamera.projectionMatrix.copy(camera.projectionMatrix);
     debugCamera.projectionMatrix.elements[10]=-(2+.02)/(2-.02);debugCamera.projectionMatrix.elements[14]=-2*2*.02/(2-.02);
     debugCamera.projectionMatrixInverse.copy(debugCamera.projectionMatrix).invert();frustum.update();
@@ -61,15 +72,20 @@ export function createTwin({canvas,scene,camera,anchor,onMove,getRoom,renderVide
   }
   function setSession(session){
     trajectory.geometry.dispose();trajectory.geometry=new THREE.BufferGeometry().setFromPoints(session.frames.map(f=>new THREE.Vector3(...f.position)));
-    const box=new THREE.Box3().setFromPoints(session.frames.map(f=>new THREE.Vector3(...f.position)));const center=box.getCenter(new THREE.Vector3());orbit.target.copy(center);view.position.copy(center).add(new THREE.Vector3(3,2.5,4));loaded=true;orbit.update();render();
+    const box=new THREE.Box3().setFromPoints(session.frames.map(f=>new THREE.Vector3(...f.position)));const center=box.getCenter(viewCenter);videoPanel.position.copy(center).add(new THREE.Vector3(0,1,-2));
+    videoPanel.scale.y=1.6*session.intrinsics.height/session.intrinsics.width;
+    loaded=true;resetView();
   }
   // In VR, select the placement plane with a controller. Desktop uses the translation gizmo.
   for(let i=0;i<2;i++){const controller=renderer.xr.getController(i);controller.addEventListener('select',()=>{
     const origin=new THREE.Vector3().setFromMatrixPosition(controller.matrixWorld),direction=new THREE.Vector3(0,0,-1).transformDirection(controller.matrixWorld);
+    if(videoPanel.visible&&new THREE.Raycaster(origin,direction).intersectObject(videoPanel).length){togglePlayback();return;}
     const point=new THREE.Vector3();if(new THREE.Ray(origin,direction).intersectPlane(new THREE.Plane(new THREE.Vector3(0,1,0),-anchor.position.y),point)){anchor.position.copy(point);onMove(point);}
-  });helper.add(controller);}
+  });
+    const pointer=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3(0,0,-5)]),new THREE.LineBasicMaterial({color:0xb5eccc}));controller.add(pointer);helper.add(controller);}
+
   const button=VRButton.createButton(renderer);button.style.position='static';document.getElementById('xr-entry').appendChild(button);
   renderer.setAnimationLoop(()=>{if(renderer.xr.isPresenting){renderVideo();render();}});
   helper.visible=false;
-  return {render,setSession,setHands,setHandTime,renderer,view,helper,gizmo};
+  return {render,setSession,setHands,setHandTime,setDebug,resetView,videoPanel,trajectory,frustum,renderer,view,helper,gizmo};
 }
