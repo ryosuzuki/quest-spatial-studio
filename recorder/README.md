@@ -1,3 +1,5 @@
+> この文書は元のQuestRealityCaptureの仕様です。このリポジトリの **Spatial Capture** のAPK・アプリID・導入方法は [トップの案内](../README.md) と [撮影手順](../docs/RECORDING.md) を参照してください。
+
 # QuestRealityCapture
 
 <p align="center">

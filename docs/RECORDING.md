@@ -1,5 +1,9 @@
 # 撮影手順
 
+[トップへ戻る](../README.md) · [クイックスタート](QUICKSTART.md) · [開発ガイド](DEVELOPMENT.md)
+
+最新の配布APKは [Spatial Capture 0.1.3テスト版](https://github.com/ryosuzuki/quest-spatial-studio/releases/tag/v0.1.3-test) のAssetsにあります。以下のコマンドはリポジトリのルートで実行し、`QUEST_SERIAL` とパスは実際の値に置き換えます。
+
 ## 準備
 
 1. Quest 3/3Sで部屋のスキャンを済ませます。既に済んでいればやり直し不要です。
@@ -23,8 +27,10 @@ USBを外しても既存データは消えません。アプリ更新と取り�
 
 ```sh
 scripts/pull.sh QUEST_SERIAL /path/to/private-captures
-python3 recorder/Tools/validate_spatial_take.py /path/to/private-captures/TAKE
+python3 recorder/Tools/validate_spatial_take.py /path/to/private-captures/files/TAKE
 ```
+
+`pull.sh` は保存先の下に `files/` を作ります。`TAKE` はその中の撮影日時フォルダです。元データは削除しません。
 
 `room-export-status.json` の成功と、実際の `room-geometry-latest.json` の形状を確認します。手は `tracked=true` のサンプルと関節配列、音声は空でないWAV、動画は全フレームのデコードとPTS対応を確認します。実機未検証の段階で「全部録れた」と判断しないでください。
 

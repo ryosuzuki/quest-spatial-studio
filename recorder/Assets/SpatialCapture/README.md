@@ -1,4 +1,6 @@
-# Spatial Capture extension (development, not yet device-verified)
+# Spatial Capture extension (experimental)
+
+Build/install, room retrieval and isolated encoder checks have passed; fresh end-to-end camera capture verification remains pending. See [current status](../../../docs/STATUS.md).
 
 Separate package: `org.openclaw.spatialcapture`; leaves QuestRealityCapture and its takes untouched.
 

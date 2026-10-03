@@ -4,6 +4,23 @@ Questで一度撮影し、部屋・カメラ軌跡を使って後からAR動画�
 
 **開発中です。コードの存在、ビルド成功、実機取得成功は区別します。** 最新の確認状況は [STATUS.md](docs/STATUS.md)。自宅の映像・音声・部屋スキャン・認証情報はこのリポジトリに含めません。
 
+## ここから始める
+
+- **Questアプリを入れる：** [Spatial Capture 0.1.3 APK（テスト版）](https://github.com/ryosuzuki/quest-spatial-studio/releases/tag/v0.1.3-test)。Assets の `spatial-capture.apk` をダウンロード。Unityは不要です。
+- **撮影する：** [導入 → 20秒撮影 → Macへ回収](docs/RECORDING.md)
+- **Macで再生・編集する：** [クイックスタート](docs/QUICKSTART.md)。Questなしのサンプルもあります。
+- **コードを読む・ビルドする：** [開発ガイドとコードマップ](docs/DEVELOPMENT.md)
+- **何が確認済みか：** [検証状況](docs/STATUS.md)。動画fps・手の連続追跡・同期精度は新しい実機撮影での確認待ちです。
+
+```text
+Quest: Spatial Capture
+  ↓ USBでコピー（元データは削除しない）
+Mac: 録画ファイル → インポート → Three.jsで配置・再生 → MP4書き出し
+                         └→ 部屋データだけを3D表示することも可能
+```
+
+このリポジトリは非公開です。閲覧・APK取得にはアクセス権のあるGitHubアカウントでのログインが必要です。
+
 ## 構成
 
 - **recorder/** — Unity/Questネイティブ録画アプリ。既存のQuestRealityCaptureを拡張。
