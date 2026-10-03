@@ -1,0 +1,21 @@
+{
+  "tool": "built-in image_gen",
+  "privateRecordingProvidedToGenerator": false,
+  "assets": [
+    {
+      "file": "botanical.png",
+      "status": "rejected for compositing; opaque backdrop retained as generation history",
+      "prompt": "Transparent botanical mural texture: one integrated airy branching vine of ferns, tiny white flowers, emerald leaves, golden roots and blue butterflies. No wall, room, shelf, text or border."
+    },
+    {
+      "file": "botanical-cutout.png",
+      "status": "adopted; RGBA alpha verified",
+      "prompt": "Keep exact botanical subject. Remove blurred green, gold, gray and black background. Actual transparent alpha around and between all leaves, roots and stems. No haze or gradient."
+    },
+    {
+      "file": "winter-garden.png",
+      "status": "adopted as generated speculative view inside existing window pane geometry",
+      "prompt": "Photorealistic moonlit Colorado garden after snowfall, frost-coated branches, spruce trees, snowy ground, distant warm lights, blue-hour sky. No window frames, room, text or borders."
+    }
+  ]
+}
