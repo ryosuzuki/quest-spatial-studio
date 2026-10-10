@@ -32,6 +32,12 @@ namespace RealityLog.Recording
         private bool recording;
         private int pairIndex;
         private readonly Dictionary<string, AndroidJavaObject> videoEncoders = new();
+        [Serializable] private class CameraStageProfile {
+            public string camera = "";
+            public long samples, getColorsTicks, enqueueTicks, metadataTicks;
+            public long stopwatchFrequency = System.Diagnostics.Stopwatch.Frequency;
+        }
+        private readonly Dictionary<string, CameraStageProfile> stageProfiles = new();
 
         public bool IsRecording => recording;
 
@@ -81,6 +87,7 @@ namespace RealityLog.Recording
             rightState.ResetRuntimeState();
             pairIndex = 0;
             leftRecordedFrames.Clear();
+            stageProfiles.Clear();
             rightRecordedFrames.Clear();
             nextSampleRealtime = 0f;
             recording = true;
@@ -107,6 +114,10 @@ namespace RealityLog.Recording
                 encoder.Dispose();
             }
             videoEncoders.Clear();
+            if (paths != null) foreach (var profile in stageProfiles.Values) {
+                try { File.WriteAllText(Path.Combine(paths.RootDirectoryPath, profile.camera.ToLowerInvariant() + "_camera.stage-profile.json"), JsonUtility.ToJson(profile, true)); }
+                catch (Exception ex) { Debug.LogWarning("[SpatialCapture] Stage profile write failed: " + ex.Message); }
+            }
             leftFrameWriter?.Dispose();
             leftFrameWriter = null;
             rightFrameWriter?.Dispose();
@@ -230,10 +241,17 @@ namespace RealityLog.Recording
                 error = AppendError(error, $"GetTexture failed: {ex.Message}");
             }
 
+            if (!stageProfiles.TryGetValue(state.CameraName, out var profile)) {
+                profile = new CameraStageProfile { camera = state.CameraName };
+                stageProfiles.Add(state.CameraName, profile);
+            }
+            profile.samples++;
             NativeArray<Color32> colors = default;
             try
             {
+                var readStart = System.Diagnostics.Stopwatch.GetTimestamp();
                 colors = access.GetColors();
+                profile.getColorsTicks += System.Diagnostics.Stopwatch.GetTimestamp() - readStart;
                 if (colors.IsCreated)
                 {
                     getColorsOk = true;
@@ -253,12 +271,14 @@ namespace RealityLog.Recording
                             // GetColors may expose a larger backing allocation. Pass only the actual frame,
                             // without JNI's per-element byte[] marshaling on the Unity render thread.
                             var frameBytes = colors.GetSubArray(0, expectedPixelCount).Reinterpret<byte>(4);
+                            var enqueueStart = System.Diagnostics.Stopwatch.GetTimestamp();
                             var localBuffer = AndroidJNI.NewDirectByteBuffer(frameBytes);
                             try {
                                 using var buffer = new AndroidJavaObject(localBuffer);
                                 if (encoder.Call<bool>("enqueueDirect", buffer, timestampUs)) fileName = name;
                                 else error = AppendError(error, "video_queue_rejected");
-                            } finally { AndroidJNI.DeleteLocalRef(localBuffer); }
+                            } finally { AndroidJNI.DeleteLocalRef(localBuffer);
+                                profile.enqueueTicks += System.Diagnostics.Stopwatch.GetTimestamp() - enqueueStart; }
                         }
                         else
                         {
@@ -299,6 +319,7 @@ namespace RealityLog.Recording
             state.LastTimestampUs = timestampUs;
             state.LastFrameIndex = state.FrameCount;
             state.LastFileName = fileName;
+            var metadataStart = System.Diagnostics.Stopwatch.GetTimestamp();
             writer.WriteLine(string.Join(",",
                 state.FrameCount.ToString(CultureInfo.InvariantCulture),
                 fileName,
@@ -327,6 +348,7 @@ namespace RealityLog.Recording
                 BoolText(getColorsOk),
                 EscapeCsv(error)));
             writer.Flush();
+            profile.metadataTicks += System.Diagnostics.Stopwatch.GetTimestamp() - metadataStart;
             if (string.IsNullOrEmpty(fileName))
             {
                 return null;
