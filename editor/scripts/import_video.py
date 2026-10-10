@@ -4,11 +4,15 @@ import argparse,csv,json,math,shutil,subprocess
 from pathlib import Path
 from import_mruk import intrinsics,good
 
-def convert(source,dest,eye='left',row_order='bottom-up'):
+def convert(source,dest,eye='left',row_order=None):
     source,dest=Path(source),Path(dest)
     if dest.exists() and any(dest.iterdir()):raise ValueError('Destination must be empty')
     video=source/f'{eye}_camera.mp4'
     status=json.loads(Path(str(video)+'.status.json').read_text())
+    declared=status.get('encodedRowOrder')
+    if declared is not None and declared not in ('bottom-up','top-down'):raise ValueError('Invalid encoded row order')
+    if row_order is not None and declared is not None and row_order!=declared:raise ValueError('Row-order override conflicts with encoder metadata')
+    row_order=declared or row_order or 'bottom-up'
     if not status.get('complete') or status.get('error'):raise ValueError('Video not finalized')
     with Path(str(video)+'.packets.csv').open() as f: packets=list(csv.DictReader(f))
     with (source/f'{eye}_camera_mruk_frame_metadata.csv').open() as f: rows=list(csv.DictReader(f))
@@ -55,4 +59,4 @@ def convert(source,dest,eye='left',row_order='bottom-up'):
             doc['audio']={'file':'audio.wav','startRelativeToVideoSeconds':(timing['estimatedFirstSampleUnixMs']*1000-origin-pts[0])/1e6,'timingQuality':timing['timingQuality']}
     (dest/'session.json').write_text(json.dumps(doc,indent=2));return doc
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('source');p.add_argument('destination');p.add_argument('--eye',default='left',choices=['left','right']);p.add_argument('--row-order',required=True,choices=['bottom-up','top-down']);a=p.parse_args();print(json.dumps(convert(a.source,a.destination,a.eye,a.row_order)['report'],indent=2))
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('source');p.add_argument('destination');p.add_argument('--eye',default='left',choices=['left','right']);p.add_argument('--row-order',choices=['bottom-up','top-down']);a=p.parse_args();print(json.dumps(convert(a.source,a.destination,a.eye,a.row_order)['report'],indent=2))

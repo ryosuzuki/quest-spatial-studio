@@ -16,8 +16,8 @@ public static class SpatialCaptureBuild
         }
         PlayerSettings.productName = "Spatial Capture";
         PlayerSettings.SetApplicationIdentifier(UnityEditor.Build.NamedBuildTarget.Android, "org.openclaw.spatialcapture");
-        PlayerSettings.Android.bundleVersionCode = 5;
-        PlayerSettings.bundleVersion = "0.1.4";
+        PlayerSettings.Android.bundleVersionCode = 6;
+        PlayerSettings.bundleVersion = "0.1.5";
         PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
         PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
         PlayerSettings.Android.useCustomKeystore = false;

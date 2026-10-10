@@ -44,3 +44,16 @@ class VideoImportTests(unittest.TestCase):
    root=Path(d);source=self.make(root)
    p=source/'left_camera_mruk_frame_metadata.csv';lines=p.read_text().splitlines();p.write_text('\n'.join(lines+[lines[1]])+'\n')
    with self.assertRaisesRegex(ValueError,'Duplicate camera metadata'):convert(source,root/'out')
+
+ def test_declared_upright_preserves_decoded_pixels(self):
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);source=self.make(root);status=source/'left_camera.mp4.status.json';doc=json.loads(status.read_text());doc['encodedRowOrder']='top-down';status.write_text(json.dumps(doc))
+   result=convert(source,root/'out')
+   self.assertEqual(result['sourceRowOrder'],'top-down')
+   decoded=subprocess.check_output(['ffmpeg','-v','error','-i',str(source/'left_camera.mp4'),'-frames:v','1','-f','rawvideo','-pix_fmt','rgb24','-'])
+   imported=subprocess.check_output(['ffmpeg','-v','error','-i',str(root/'out/frames/000000.png'),'-f','rawvideo','-pix_fmt','rgb24','-'])
+   self.assertEqual(decoded,imported)
+ def test_conflicting_orientation_rejected(self):
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);source=self.make(root);status=source/'left_camera.mp4.status.json';doc=json.loads(status.read_text());doc['encodedRowOrder']='top-down';status.write_text(json.dumps(doc))
+   with self.assertRaisesRegex(ValueError,'conflicts'):convert(source,root/'out',row_order='bottom-up')

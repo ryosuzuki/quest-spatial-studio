@@ -265,7 +265,7 @@ namespace RealityLog.Recording
                             var name = state.CameraName.ToLowerInvariant() + "_camera.mp4";
                             if (!videoEncoders.TryGetValue(name, out var encoder)) {
                                 encoder = new AndroidJavaObject("org.openclaw.spatial.SpatialVideoEncoder",
-                                    Path.Combine(paths.RootDirectoryPath, name), width, height);
+                                    Path.Combine(paths.RootDirectoryPath, name), width, height, true);
                                 videoEncoders.Add(name, encoder);
                             }
                             // GetColors may expose a larger backing allocation. Pass only the actual frame,
